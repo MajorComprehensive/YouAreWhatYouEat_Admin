@@ -16,51 +16,47 @@ function mealInfo() {
 
   return (
     <>
-      <Grid container spacing={4}>
-        <Head>
-          <title>菜品及库存信息</title>
-        </Head>
-        <Grid item xs={12} >
-          <PageTitleWrapper>
-            <PageHeader />
-          </PageTitleWrapper>
-        </Grid>
 
-        <Container maxWidth="lg">
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={{ xs: 5, md: 3 }}
-          >
-            <Grid item xs={12} >
-              <AllMealInfoes />
-            </Grid>
-
+      <Head>
+        <title>菜品及库存信息</title>
+      </Head>
+      <PageTitleWrapper>
+        <PageHeader />
+      </PageTitleWrapper>
+      
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <AllMealInfoes />
           </Grid>
-        </Container>
-        <Grid item xs={12} >
-          <PageTitleWrapper>
-            <StockPageHeader />
-          </PageTitleWrapper>
         </Grid>
+      </Container>
 
-        <Container maxWidth="lg">
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
-            <Grid item xs={12}>
-              <AllStockInfoes />
-            </Grid>
+      <PageTitleWrapper>
+        <StockPageHeader />
+      </PageTitleWrapper>
+
+      <Container maxWidth="lg">
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+          <AllStockInfoes />
           </Grid>
-        </Container>
-        <Footer />
-      </Grid>
+        </Grid>
+      </Container>
+
+      <Footer />
     </>
   )
 
