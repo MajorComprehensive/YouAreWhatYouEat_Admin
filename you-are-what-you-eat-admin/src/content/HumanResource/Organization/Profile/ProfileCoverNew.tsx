@@ -102,7 +102,6 @@ const ProfileCoverNew = ({
   upload: EmployeeUpload;
   setSelectedUpload: (upload: EmployeeUpload) => void;
 }) => {
-  console.log(upload);
 
   const handleNameChange = (event) => {
     if (event.target.value) {
@@ -140,6 +139,13 @@ const ProfileCoverNew = ({
       setSelectedUpload(newUpload);
     }
   };
+
+  // const handlePasswordChange = (event) => {
+  //   if (event.target.value) {
+  //     let newUpload = { ...upload };
+
+  //   }
+  // };
 
   return (
     <>
@@ -251,6 +257,36 @@ const ProfileCoverNew = ({
                   id="outlined-disabled"
                   label="职位"
                 />
+
+                {/* <TextField
+                  sx={{ mx: 1 }}
+                  variant="outlined"
+                  required
+                  value={}
+                  onChange={}
+                  id="outlined-disabled"
+                  label="邮箱"
+                />
+
+                <TextField
+                  sx={{ mx: 1 }}
+                  variant="outlined"
+                  required
+                  value={}
+                  onChange={}
+                  id="outlined-disabled"
+                  label="密码"
+                />
+
+                <TextField
+                  sx={{ mx: 1 }}
+                  variant="outlined"
+                  required
+                  value={}
+                  onChange={}
+                  id="outlined-disabled"
+                  label="再次确认密码"
+                /> */}
               </Box>
             </Grid>
           </Grid>

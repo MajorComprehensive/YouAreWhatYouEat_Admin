@@ -104,7 +104,7 @@ class CasdoorSdk {
 
 const sdkConfig: CasdoorSdkConfig = {
   serverUrl: GlobalConfig.getAuthorizationURL(),
-  clientId: '82737aac8ec89315c220',
+  clientId: '69cd3ba4058a89e3724d',
   appName: 'application_dbks',
   organizationName: 'organization_dbks',
   redirectPath: '/callback'

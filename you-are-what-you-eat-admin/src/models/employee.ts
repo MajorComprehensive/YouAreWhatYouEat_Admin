@@ -54,6 +54,8 @@ export interface EmployeeUpload {
   id: null | string;
   name: string;
   occupation: string;
+  // password: string;
+  // email:string;
 }
 
 export interface Attend {
