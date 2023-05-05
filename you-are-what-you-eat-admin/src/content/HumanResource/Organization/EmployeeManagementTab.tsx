@@ -177,7 +177,11 @@ function EmployeeManagementTab() {
                       !upload.avatar ||
                       upload.avatar === '' ||
                       !upload.cover ||
-                      upload.cover === ''
+                      upload.cover === ''||
+                      !upload.password ||
+                      upload.password === ''||
+                      !upload.email ||
+                      upload.email === ''
                     }
                     onClick={() => {
                       console.log(upload);
@@ -194,25 +198,73 @@ function EmployeeManagementTab() {
                         return;
                       }
 
+
+                      const addEmployee = async () => {
+
+                          return await humanResourceApi.postEmployee({
+                            id: null,
+  
+                            name: upload.name,
+                            gender: upload.gender,
+                            birthday: upload.birthday,
+                            occupation: upload.occupation,
+  
+                            cover: upload.cover,
+                            avatar: upload.avatar
+                          } as EmployeeUpload);
+
+                      };
+
                       const conduct = async () => {
-                        return await humanResourceApi.postEmployee({
-                          id: null,
+                        
+                        await addEmployee();
 
-                          name: upload.name,
-                          gender: upload.gender,
-                          birthday: upload.birthday,
-                          occupation: upload.occupation,
+                        const newAddEmployee = await humanResourceApi.getEmployees();
+                        const newId = newAddEmployee.find((employee) => {
+                          return employee.name === upload.name 
+                          && employee.gender === upload.gender 
+                          && employee.birthday === upload.birthday
+                          && employee.occupation === upload.occupation
+                        }).id;
 
-                          cover: upload.cover,
-                          avatar: upload.avatar
-                        } as EmployeeUpload);
+                        upload.id = newId;
+
+                        console.log("this is upload",upload);
+
+                        return await humanResourceApi.registerEmployee({
+                          ...upload
+                        });
                       };
 
                       
 
                       conduct()
                         .then((value) => {
-                          alert('添加成功：' + value+"\n请在表格中查看点击详情查看员工ID，并使用ID注册账号");
+
+                          if(value==="OK"){
+                            alert('添加成功：' + value+"\n请在表格中查看点击详情查看员工");
+                            window.location.reload();
+                          }
+
+                          else{
+
+                            if(upload.id){
+
+                              const callback=()=>{
+                                upload.id=null;
+                                
+                              }
+
+                              humanResourceApi.deleteEmployee(upload.id).then((value)=>{
+                                callback();
+                              }).catch((value)=>{
+                                callback();
+                              })
+
+                            }
+
+                            alert('添加失败：' + value);
+                          }
 
                           
                         })

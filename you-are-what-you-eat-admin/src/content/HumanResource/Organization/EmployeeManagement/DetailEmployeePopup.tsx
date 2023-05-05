@@ -83,15 +83,6 @@ export default function DetailEmployeePopup({ userId }: { userId: string }) {
               员工详情界面
             </Typography>
             <Button
-              color="inherit"
-              onClick={()=>{
-
-                window.open(authorization.getSignupUrl(GlobalConfig.getFrontendURL()));
-              
-              }}>
-                  为该员工注册登陆账号
-            </Button>
-            <Button
               autoFocus
               color="inherit"
               onClick={handleClose}

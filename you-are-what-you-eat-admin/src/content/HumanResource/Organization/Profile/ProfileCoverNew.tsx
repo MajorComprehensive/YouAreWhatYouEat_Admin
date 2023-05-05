@@ -140,12 +140,23 @@ const ProfileCoverNew = ({
     }
   };
 
-  // const handlePasswordChange = (event) => {
-  //   if (event.target.value) {
-  //     let newUpload = { ...upload };
+  const handlePasswordChange = (event) => {
+    if (event.target.value) {
+      let newUpload = { ...upload };
+      
+      newUpload.password = event.target.value;
+      setSelectedUpload(newUpload);
 
-  //   }
-  // };
+    }
+  };
+
+  const handleEmailChange = (event) => {
+    if (event.target.value) {
+      let newUpload = { ...upload };
+      newUpload.email = event.target.value;
+      setSelectedUpload(newUpload);
+    }
+  };
 
   return (
     <>
@@ -258,12 +269,12 @@ const ProfileCoverNew = ({
                   label="职位"
                 />
 
-                {/* <TextField
+                <TextField
                   sx={{ mx: 1 }}
                   variant="outlined"
                   required
-                  value={}
-                  onChange={}
+                  value={upload.email}
+                  onChange={handleEmailChange}
                   id="outlined-disabled"
                   label="邮箱"
                 />
@@ -272,12 +283,13 @@ const ProfileCoverNew = ({
                   sx={{ mx: 1 }}
                   variant="outlined"
                   required
-                  value={}
-                  onChange={}
+                  value={upload.password}
+                  onChange={handlePasswordChange}
                   id="outlined-disabled"
                   label="密码"
                 />
 
+                {/* 
                 <TextField
                   sx={{ mx: 1 }}
                   variant="outlined"
