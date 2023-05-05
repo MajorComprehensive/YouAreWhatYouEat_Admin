@@ -77,13 +77,12 @@ let i: MealInfo = {
 
 
 let m: MealInfoUpload = {
-  id: 123,
-  dis_name: '123',
-  price: 123,
-  description: '123',
-  tags: [""],
-  ingredient: [""]
-
+  id: 0,
+  dis_name: '',
+  price: 0,
+  description: '',
+  tags: [],
+  ingredient: []
 }
 
 const applyPagination = (
@@ -148,11 +147,11 @@ const MealInfoTable = () => {
 
   const { t }: { t: any } = useTranslation();
   const nameInputChange = (e) => {
-    m.dis_name = (e.target.value);
+    //m.dis_name = (e.target.value);
     setdis_name_Change(e.target.value);
   }
   const priceInputChange = (e) => {
-    m.price = Number(e.target.value);
+    //m.price = Number(e.target.value);
     setprice_Change(e.target.value);
 
     var rex = /^[0-9]+$/;//正则表达式
@@ -166,19 +165,22 @@ const MealInfoTable = () => {
     }
   }
   const descriptionInputChange = (e) => {
-    m.description = e.target.value;
+    //m.description = e.target.value;
     setdescription_Change(e.target.value);
   }
   const tagsInputChange = (e) => {
-    m.tags = e.target.value.split(" ");
+    //m.tags = e.target.value.split(" ");
     settags_Change(e.target.value);
-    console.log(m.tags);
+    //console.log(m.tags);
   }
   const ingInputChange = (e) => {
-    m.ingredient = e.target.value.split(" ");
+    //m.ingredient = e.target.value.split(" ");
     setingredient_Change(e.target.value);
+    
     let j = 1;
-    m.ingredient.map((item) => {
+    let temp:string[]
+    temp=e.target.value.split(" ");
+    temp.map((item) => {
       if (a.indexOf(item) == -1) {
         j = 0;
         console.log(item);
@@ -241,7 +243,7 @@ const MealInfoTable = () => {
   const [idChange, setidChange] = useState<string>('');
 
   const [dis_name_Change, setdis_name_Change] = useState<string>('');
-  const [price_Change, setprice_Change] = useState<Number>(0);
+  const [price_Change, setprice_Change] = useState<number>(0);
   const [description_Change, setdescription_Change] = useState<string>('');
   const [tags_Change, settags_Change] = useState<string>('');
   const [ingredient_Change, setingredient_Change] = useState<string>('');
@@ -259,25 +261,32 @@ const MealInfoTable = () => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = (_id:string) => {
     setOpen(true);
-    //在此处将点开的菜品信息存入m
-    //TODO：将m信息存入状态用于显示
     let editInfo:MealInfo[];
+    //m.id=Number(_id);
     if(MealInfoes!=null && idChange!=null)
     {
       editInfo = MealInfoes.filter((mealInfo: MealInfo)=>{ return mealInfo.id === _id})
       if(editInfo.length > 0)
       {
+        //m.dis_name=editInfo[0].dis_name;
+        //m.price=editInfo[0].price
+        //m.description=editInfo[0].description
+        //m.ingredient=editInfo[0].ingredient
+        //m.tags=editInfo[0].tags
+
         setdis_name_Change(editInfo[0].dis_name);
         setprice_Change(editInfo[0].price)
         setdescription_Change(editInfo[0].description)
         if(editInfo[0].tags!=null&&editInfo[0].tags.length>0)
         {
-          settags_Change(editInfo[0].tags.reduce((previous,current)=>previous+" "+current))
+          settags_Change(editInfo[0].tags.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
         }
         if(editInfo[0].ingredient!=null&&editInfo[0].ingredient.length>0)
         {
-          setingredient_Change(editInfo[0].ingredient.reduce((previous,current)=>previous+" "+current))
+          setingredient_Change(editInfo[0].ingredient.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
         }
+
+        //console.log(m)
       }
     }
   };
@@ -450,7 +459,7 @@ const MealInfoTable = () => {
 
                     <TableCell >
                       <Tooltip title="编辑" arrow onClick={() => {
-                        //setidChange(mealInfo.id);
+                        setidChange(mealInfo.id);
                         handleClickOpen(mealInfo.id);
                       }
                       }>
@@ -501,7 +510,6 @@ const MealInfoTable = () => {
                             fullWidth
                             variant="standard"
                             value={description_Change}
-                            //value={m.description}
                             onChange={descriptionInputChange}
                           />
                           <TextField
@@ -532,7 +540,14 @@ const MealInfoTable = () => {
                           <Button onClick={handleClose}>取消</Button>
                           <Button onClick={() => {
                             m.id = Number(idChange);
-                            console.log(idChange);
+                            m.dis_name=dis_name_Change;
+                            m.price=price_Change;
+                            m.description=description_Change;
+                            m.ingredient = ingredient_Change.split(" ");
+                            m.tags = tags_Change.split(" ");
+                            
+                            console.log("uploading m:");
+                            console.log(m);
                             const conduct = async () => {
                               return mealInfoApi.updateMeal(m);
                             }
