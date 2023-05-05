@@ -263,6 +263,9 @@ const MealInfoTable = () => {
     setOpen(true);
     let editInfo:MealInfo[];
     //m.id=Number(_id);
+
+    console.log("open")
+
     if(MealInfoes!=null && idChange!=null)
     {
       editInfo = MealInfoes.filter((mealInfo: MealInfo)=>{ return mealInfo.id === _id})
@@ -521,7 +524,7 @@ const MealInfoTable = () => {
                             variant="standard"
                             value={tags_Change}
                             onChange={tagsInputChange}
-                            helperText="单锅，拼锅，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品，根茎菌菇，酒水，甜点小食"
+                            helperText="人气菜品，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品，根茎菌菇，酒水，甜点小食"
                           />
                           <TextField
                             autoFocus
