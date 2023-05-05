@@ -304,8 +304,7 @@ const MealInfoTable = () => {
   console.log(a);
   return (
     <Card>
-      {(
-        <CardHeader
+      <CardHeader
           action={
             <FormControl variant="outlined" fullWidth>
               <OutlinedInputWrapper
@@ -330,13 +329,11 @@ const MealInfoTable = () => {
           }
           title="菜品信息列表"
         />
-      )}
       <Divider />
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-
               <TableCell>菜品编号</TableCell>
               <TableCell>菜品名称</TableCell>
               <TableCell >价格</TableCell>
@@ -357,7 +354,6 @@ const MealInfoTable = () => {
                         fontWeight="bold"
                         color="text.primary"
                         gutterBottom
-                        noWrap
                       >
                         {mealInfo.id}
                       </Typography>
@@ -369,7 +365,6 @@ const MealInfoTable = () => {
                         fontWeight="bold"
                         color="text.primary"
                         gutterBottom
-                        noWrap
                       >
                         {mealInfo.dis_name}
                       </Typography>
@@ -380,7 +375,6 @@ const MealInfoTable = () => {
                         fontWeight="bold"
                         color="text.primary"
                         gutterBottom
-                        noWrap
                       >
                         {mealInfo.price}
                       </Typography>
@@ -392,7 +386,6 @@ const MealInfoTable = () => {
                         fontWeight="bold"
                         color="text.primary"
                         gutterBottom
-                        noWrap
                       >
                         {mealInfo.description}
 
@@ -405,7 +398,6 @@ const MealInfoTable = () => {
                         fontWeight="bold"
                         color="text.primary"
                         gutterBottom
-                        noWrap
                       >
                         {AddSpace(mealInfo.ingredient)}
 
@@ -418,7 +410,6 @@ const MealInfoTable = () => {
                         fontWeight="bold"
                         color="text.primary"
                         gutterBottom
-                        noWrap
                       >
                         {AddSpace(mealInfo.tags)}
 
