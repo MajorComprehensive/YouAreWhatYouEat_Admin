@@ -270,8 +270,14 @@ const MealInfoTable = () => {
         setdis_name_Change(editInfo[0].dis_name);
         setprice_Change(editInfo[0].price)
         setdescription_Change(editInfo[0].description)
-        settags_Change(editInfo[0].tags.reduce((previous,current)=>previous+" "+current))
-        setingredient_Change(editInfo[0].ingredient.reduce((previous,current)=>previous+" "+current))
+        if(editInfo[0].tags!=null&&editInfo[0].tags.length>0)
+        {
+          settags_Change(editInfo[0].tags.reduce((previous,current)=>previous+" "+current))
+        }
+        if(editInfo[0].ingredient!=null&&editInfo[0].ingredient.length>0)
+        {
+          setingredient_Change(editInfo[0].ingredient.reduce((previous,current)=>previous+" "+current))
+        }
       }
     }
   };
