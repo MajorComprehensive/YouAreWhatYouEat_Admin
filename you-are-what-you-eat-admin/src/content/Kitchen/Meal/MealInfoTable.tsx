@@ -50,6 +50,7 @@ import {
 import { queryIngredientApi } from '@/queries/query_ingredient';
 import { IngredientInfo } from '@/models/ingredient_info';
 import { useTranslation } from 'react-i18next';
+import { Console } from 'console';
 const CardCover = styled(Card)(
   ({ theme }) => `
       position: relative;
@@ -143,12 +144,16 @@ const MealInfoTable = () => {
 
   let a = [];
 
+  //const [m, setMealInfoUpload] = useState<MealInfoUpload>();
+
   const { t }: { t: any } = useTranslation();
   const nameInputChange = (e) => {
     m.dis_name = (e.target.value);
+    setdis_name_Change(e.target.value);
   }
   const priceInputChange = (e) => {
     m.price = Number(e.target.value);
+    setprice_Change(e.target.value);
 
     var rex = /^[0-9]+$/;//正则表达式
     var flag = (rex.test(m.price.toString()));//通过表达式进行匹配
@@ -162,13 +167,16 @@ const MealInfoTable = () => {
   }
   const descriptionInputChange = (e) => {
     m.description = e.target.value;
+    setdescription_Change(e.target.value);
   }
   const tagsInputChange = (e) => {
     m.tags = e.target.value.split(" ");
+    settags_Change(e.target.value);
     console.log(m.tags);
   }
   const ingInputChange = (e) => {
     m.ingredient = e.target.value.split(" ");
+    setingredient_Change(e.target.value);
     let j = 1;
     m.ingredient.map((item) => {
       if (a.indexOf(item) == -1) {
@@ -232,8 +240,11 @@ const MealInfoTable = () => {
   const [limit, setLimit] = useState<number>(5);
   const [idChange, setidChange] = useState<string>('');
 
-
-
+  const [dis_name_Change, setdis_name_Change] = useState<string>('');
+  const [price_Change, setprice_Change] = useState<Number>(0);
+  const [description_Change, setdescription_Change] = useState<string>('');
+  const [tags_Change, settags_Change] = useState<string>('');
+  const [ingredient_Change, setingredient_Change] = useState<string>('');
 
   const [idLook, setIdLook] = useState<MealInfo>(null);
 
@@ -246,9 +257,23 @@ const MealInfoTable = () => {
     setLimit(parseInt(event.target.value));
   };
   const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
+  const handleClickOpen = (_id:string) => {
     setOpen(true);
-
+    //在此处将点开的菜品信息存入m
+    //TODO：将m信息存入状态用于显示
+    let editInfo:MealInfo[];
+    if(MealInfoes!=null && idChange!=null)
+    {
+      editInfo = MealInfoes.filter((mealInfo: MealInfo)=>{ return mealInfo.id === _id})
+      if(editInfo.length > 0)
+      {
+        setdis_name_Change(editInfo[0].dis_name);
+        setprice_Change(editInfo[0].price)
+        setdescription_Change(editInfo[0].description)
+        settags_Change(editInfo[0].tags.reduce((previous,current)=>previous+" "+current))
+        setingredient_Change(editInfo[0].ingredient.reduce((previous,current)=>previous+" "+current))
+      }
+    }
   };
 
 
@@ -419,8 +444,8 @@ const MealInfoTable = () => {
 
                     <TableCell >
                       <Tooltip title="编辑" arrow onClick={() => {
-                        setidChange(mealInfo.id);
-                        handleClickOpen();
+                        //setidChange(mealInfo.id);
+                        handleClickOpen(mealInfo.id);
                       }
                       }>
                         <IconButton
@@ -436,6 +461,7 @@ const MealInfoTable = () => {
                           <EditTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
+                      
                       <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>菜品信息</DialogTitle>
                         <DialogContent>
@@ -446,6 +472,7 @@ const MealInfoTable = () => {
                             label="新的菜品名称"
                             fullWidth
                             variant="standard"
+                            value={dis_name_Change}
                             onChange={nameInputChange}
                           />
                           <TextField
@@ -457,6 +484,7 @@ const MealInfoTable = () => {
                             variant="standard"
                             onChange={priceInputChange}
                             helperText="请输入合法数字"
+                            value={price_Change}
                             error={judgePrice}
                           />
                           <TextField
@@ -466,6 +494,8 @@ const MealInfoTable = () => {
                             label="新的菜品描述"
                             fullWidth
                             variant="standard"
+                            value={description_Change}
+                            //value={m.description}
                             onChange={descriptionInputChange}
                           />
                           <TextField
@@ -475,6 +505,7 @@ const MealInfoTable = () => {
                             label="新的菜品标签"
                             fullWidth
                             variant="standard"
+                            value={tags_Change}
                             onChange={tagsInputChange}
                             helperText="单锅，拼锅，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品，根茎菌菇，酒水，甜点小食"
                           />
@@ -485,6 +516,7 @@ const MealInfoTable = () => {
                             label="新的菜品需要的原料"
                             fullWidth
                             variant="standard"
+                            value={ingredient_Change}
                             onChange={ingInputChange}
                             helperText="请输入现有的原料"
                             error={judgeIng}
@@ -517,6 +549,7 @@ const MealInfoTable = () => {
                           }} href="javascript:location.reload(true)">确定</Button>
                         </DialogActions>
                       </Dialog>
+
                       <Tooltip title="删除" arrow>
                         <IconButton
                           sx={{
