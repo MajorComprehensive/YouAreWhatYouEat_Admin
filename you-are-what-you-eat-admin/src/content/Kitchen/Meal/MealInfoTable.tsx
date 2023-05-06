@@ -50,7 +50,7 @@ import {
 import { queryIngredientApi } from '@/queries/query_ingredient';
 import { IngredientInfo } from '@/models/ingredient_info';
 import { useTranslation } from 'react-i18next';
-import { Console } from 'console';
+
 const CardCover = styled(Card)(
   ({ theme }) => `
       position: relative;
@@ -60,21 +60,6 @@ const CardCover = styled(Card)(
       }
   `
 );
-
-let i: MealInfo = {
-  description: "",
-  dis_name: "",
-  id: "",
-  price: 0,
-  tags: [""],
-  picture: "",
-  rate: "",
-  video: "",
-  ingredient: [""]
-
-}
-
-
 
 let m: MealInfoUpload = {
   id: 0,
@@ -93,21 +78,11 @@ const applyPagination = (
   return mealInfoes.slice(page * limit, page * limit + limit);
 };
 
-
-
-
-
-
-
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.white[100]};
   `
 );
-
-
-
-
 const getPriceStyles = () => {
   let styles = {
     color: "blue",
@@ -116,7 +91,6 @@ const getPriceStyles = () => {
   }
   return styles;
 }
-
 
 const ButtonSearch = styled(Button)(
   ({ theme }) => `
@@ -139,8 +113,6 @@ const AddSpace = (item: string[]) => {
   return ""
 }
 
-
-
 const MealInfoTable = () => {
   const [judgePrice, setJudgePrice] = React.useState(false);
 
@@ -148,15 +120,11 @@ const MealInfoTable = () => {
 
   let a = [];
 
-  //const [m, setMealInfoUpload] = useState<MealInfoUpload>();
-
   const { t }: { t: any } = useTranslation();
   const nameInputChange = (e) => {
-    //m.dis_name = (e.target.value);
     setdis_name_Change(e.target.value);
   }
   const priceInputChange = (e) => {
-    //m.price = Number(e.target.value);
     setprice_Change(e.target.value);
 
     var rex = /^[0-9]+$/;//正则表达式
@@ -170,16 +138,13 @@ const MealInfoTable = () => {
     }
   }
   const descriptionInputChange = (e) => {
-    //m.description = e.target.value;
     setdescription_Change(e.target.value);
   }
   const tagsInputChange = (e) => {
-    //m.tags = e.target.value.split(" ");
     settags_Change(e.target.value);
     //console.log(m.tags);
   }
   const ingInputChange = (e) => {
-    //m.ingredient = e.target.value.split(" ");
     setingredient_Change(e.target.value);
     
     let j = 1;
@@ -204,10 +169,7 @@ const MealInfoTable = () => {
   const isMountedRef = useRefMounted();
   const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
   const [SearchMealInfoes, setSearchMealInfoes] = useState<MealInfo[]>([]);
-
   const [ing, setIng] = useState<IngredientInfo[]>([]);
-
-
 
 
   const getAllData = useCallback(async () => {
@@ -264,41 +226,19 @@ const MealInfoTable = () => {
     setLimit(parseInt(event.target.value));
   };
   const [open, setOpen] = React.useState(false);
-  const handleClickOpen = (_id:string) => {
+  const handleClickOpen = (meal: MealInfo) => {
     setOpen(true);
-    let editInfo:MealInfo[];
-    //m.id=Number(_id);
-
-    console.log("open")
-
     if(MealInfoes!=null && idChange!=null)
     {
-      editInfo = MealInfoes.filter((mealInfo: MealInfo)=>{ return mealInfo.id === _id})
-      if(editInfo.length > 0)
-      {
-        //m.dis_name=editInfo[0].dis_name;
-        //m.price=editInfo[0].price
-        //m.description=editInfo[0].description
-        //m.ingredient=editInfo[0].ingredient
-        //m.tags=editInfo[0].tags
-
-        setdis_name_Change(editInfo[0].dis_name);
-        setprice_Change(editInfo[0].price)
-        setdescription_Change(editInfo[0].description)
-        if(editInfo[0].tags!=null&&editInfo[0].tags.length>0)
-        {
-          settags_Change(editInfo[0].tags.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
-        }
-        if(editInfo[0].ingredient!=null&&editInfo[0].ingredient.length>0)
-        {
-          setingredient_Change(editInfo[0].ingredient.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
-        }
-
-        //console.log(m)
-      }
+      setdis_name_Change(meal.dis_name);
+      setprice_Change(meal.price)
+      setdescription_Change(meal.description)
+      if(meal.tags && meal.tags.length>0)
+        settags_Change(meal.tags.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
+      if(meal.ingredient && meal.ingredient.length>0)
+        setingredient_Change(meal.ingredient.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
     }
   };
-
 
   const handleClose = () => {
     setOpen(false);
@@ -472,7 +412,7 @@ const MealInfoTable = () => {
                     <TableCell >
                       <Tooltip title="编辑" arrow onClick={() => {
                         setidChange(mealInfo.id);
-                        handleClickOpen(mealInfo.id);
+                        handleClickOpen(mealInfo);
                       }
                       }>
                         <IconButton
