@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { ChangeEvent, useState, useEffect, useCallback } from 'react';
-
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -25,7 +23,6 @@ import {
   CardHeader,
   OutlinedInput
 } from '@mui/material';
-
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import { MealInfo, MealInfoUpload } from '@/models/meal_info';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
@@ -34,10 +31,7 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-
 import DialogTitle from '@mui/material/DialogTitle';
-
-
 import DetailsIcon from '@mui/icons-material/Details';
 import { mealInfoApi } from '@/queries/meal';
 import StarRateIcon from '@mui/icons-material/StarRate';
@@ -46,7 +40,6 @@ import {
   Grid,
   CardMedia,
 } from '@mui/material';
-
 import { queryIngredientApi } from '@/queries/query_ingredient';
 import { IngredientInfo } from '@/models/ingredient_info';
 import { useTranslation } from 'react-i18next';
@@ -60,15 +53,6 @@ const CardCover = styled(Card)(
       }
   `
 );
-
-let m: MealInfoUpload = {
-  id: 0,
-  dis_name: '',
-  price: 0,
-  description: '',
-  tags: [],
-  ingredient: []
-}
 
 const applyPagination = (
   mealInfoes: MealInfo[],
@@ -106,9 +90,8 @@ const AddSpace = (item: string[]) => {
   //   j.splice(i, 0, "   ");
   // }
   // return j;
-  if(item!=null&&item.length>0)
-  {
-    return item.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim()
+  if (item != null && item.length > 0) {
+    return item.reduce((previous, current) => previous.trim() + " " + current.trim()).trim()
   }
   return ""
 }
@@ -128,11 +111,10 @@ const MealInfoTable = () => {
     setprice_Change(e.target.value);
 
     var rex = /^[0-9]+$/;//正则表达式
-    var flag = (rex.test(m.price.toString()));//通过表达式进行匹配
+    var flag = (rex.test(e.target.value.toString()));//通过表达式进行匹配
     if (flag) {
       setJudgePrice(false);
     }
-
     else {
       setJudgePrice(true);
     }
@@ -142,14 +124,13 @@ const MealInfoTable = () => {
   }
   const tagsInputChange = (e) => {
     settags_Change(e.target.value);
-    //console.log(m.tags);
   }
   const ingInputChange = (e) => {
     setingredient_Change(e.target.value);
-    
+
     let j = 1;
-    let temp:string[]
-    temp=e.target.value.split(" ");
+    let temp: string[]
+    temp = e.target.value.split(" ");
     temp.map((item) => {
       if (a.indexOf(item) == -1) {
         j = 0;
@@ -161,9 +142,7 @@ const MealInfoTable = () => {
       else {
         setJudgeIng(false);
       }
-
     })
-
   }
 
   const isMountedRef = useRefMounted();
@@ -194,16 +173,9 @@ const MealInfoTable = () => {
     }
   }, [isMountedRef]);
 
-
-
-
-
-
   useEffect(() => {
     getAllData();
   }, [getAllData]);
-
-
 
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
@@ -228,15 +200,14 @@ const MealInfoTable = () => {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = (meal: MealInfo) => {
     setOpen(true);
-    if(MealInfoes!=null && idChange!=null)
-    {
+    if (MealInfoes != null && idChange != null) {
       setdis_name_Change(meal.dis_name);
       setprice_Change(meal.price)
       setdescription_Change(meal.description)
-      if(meal.tags && meal.tags.length>0)
-        settags_Change(meal.tags.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
-      if(meal.ingredient && meal.ingredient.length>0)
-        setingredient_Change(meal.ingredient.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim())
+      if (meal.tags && meal.tags.length > 0)
+        settags_Change(meal.tags.reduce((previous, current) => previous.trim() + " " + current.trim()).trim())
+      if (meal.ingredient && meal.ingredient.length > 0)
+        setingredient_Change(meal.ingredient.reduce((previous, current) => previous.trim() + " " + current.trim()).trim())
     }
   };
 
@@ -293,30 +264,30 @@ const MealInfoTable = () => {
   return (
     <Card>
       <CardHeader
-          action={
-            <FormControl variant="outlined" fullWidth>
-              <OutlinedInputWrapper
-                onChange={handleSearchChange}
-                type="text"
-                placeholder="输入菜品名称"
-                endAdornment={
-                  <InputAdornment position="end" >
-                    <ButtonSearch variant="contained" size="small" onClick={handleSearchClick} >
-                      搜索
-                    </ButtonSearch>
+        action={
+          <FormControl variant="outlined" fullWidth>
+            <OutlinedInputWrapper
+              onChange={handleSearchChange}
+              type="text"
+              placeholder="输入菜品名称"
+              endAdornment={
+                <InputAdornment position="end" >
+                  <ButtonSearch variant="contained" size="small" onClick={handleSearchClick} >
+                    搜索
+                  </ButtonSearch>
 
-                  </InputAdornment>
-                }
-                startAdornment={
-                  <InputAdornment position="start">
-                    <SearchTwoToneIcon />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          }
-          title="菜品信息列表"
-        />
+                </InputAdornment>
+              }
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchTwoToneIcon />
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        }
+        title="菜品信息列表"
+      />
       <Divider />
       <TableContainer>
         <Table>
@@ -388,7 +359,7 @@ const MealInfoTable = () => {
                         gutterBottom
                       >
                         {AddSpace(mealInfo.ingredient)
-                        //ingredient_Change
+                          //ingredient_Change
                         }
 
                       </Typography>
@@ -402,7 +373,7 @@ const MealInfoTable = () => {
                         gutterBottom
                       >
                         {AddSpace(mealInfo.tags)
-                        //tags_Change
+                          //tags_Change
                         }
 
                       </Typography>
@@ -428,7 +399,7 @@ const MealInfoTable = () => {
                           <EditTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      
+
                       <Dialog open={open} onClose={handleClose}>
                         <DialogTitle>菜品信息</DialogTitle>
                         <DialogContent>
@@ -491,20 +462,18 @@ const MealInfoTable = () => {
                         <DialogActions>
                           <Button onClick={handleClose}>取消</Button>
                           <Button onClick={() => {
-                            m.id = Number(idChange);
-                            m.dis_name=dis_name_Change;
-                            m.price=price_Change;
-                            m.description=description_Change;
-                            m.ingredient = ingredient_Change.split(" ");
-                            m.tags = tags_Change.split(" ");
-                            
-                            console.log("uploading m:");
-                            console.log(m);
                             const conduct = async () => {
-                              return mealInfoApi.updateMeal(m);
+                              return mealInfoApi.updateMeal({
+                                id: Number(idChange),
+                                dis_name: dis_name_Change,
+                                price: price_Change,
+                                description: description_Change,
+                                ingredient: ingredient_Change.split(" "),
+                                tags: tags_Change.split(" ")
+                              });
                             }
                             var rex = /^[0-9]+$/;//正则表达式
-                            var flag = (rex.test(m.price.toString()));//通过表达式进行匹配
+                            var flag = (rex.test(price_Change.toString()));//通过表达式进行匹配
 
                             if (flag) {
                               conduct().then((value) => {
@@ -534,8 +503,6 @@ const MealInfoTable = () => {
                           href="javascript:location.reload(true)"
                           onClick={() => {
                             const conduct = async () => {
-
-
                               return mealInfoApi.delMeal(
                                 mealInfo.id)
                             }
@@ -616,10 +583,7 @@ const MealInfoTable = () => {
                             </div>
                           </Card>
 
-
-
                         </DialogContent>}
-
                       </Dialog>
                     </TableCell>
                   </TableRow>
