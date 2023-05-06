@@ -27,16 +27,6 @@ import EnergyChart from 'src/content/Overview/Highlights/EnergyCover/EnergyChart
 import TableSummary from './TableCover/TableSummary';
 
 const group = [
-  '1950849 李乐天',
-  '1951510 姜文渊',
-  '1951477 孟  宇',
-  '1953824 杨淳屹',
-  '1950787 杨  鑫',
-  '1951650 戴仁杰',
-  '1951138 王铭邦',
-  '1953243 杨孟臻',
-  '2052717 陈  晨',
-  '2056173 何红昌'
 ]
 
 const AvatarSuccess = styled(Avatar)(
