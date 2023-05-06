@@ -443,6 +443,7 @@ const MealInfoTable = () => {
                         gutterBottom
                       >
                         {//AddSpace(mealInfo.ingredient)
+                        ingredient_Change
                         }
 
                       </Typography>
@@ -456,6 +457,7 @@ const MealInfoTable = () => {
                         gutterBottom
                       >
                         {//AddSpace(mealInfo.tags)
+                        tags_Change
                         }
 
                       </Typography>
