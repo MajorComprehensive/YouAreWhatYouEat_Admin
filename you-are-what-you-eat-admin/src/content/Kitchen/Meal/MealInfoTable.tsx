@@ -125,14 +125,19 @@ const ButtonSearch = styled(Button)(
 );
 
 
-// const AddSpace = (item: string[]) => {
-//   let j: string[] = item;
+const AddSpace = (item: string[]) => {
+  // let j: string[] = item;
 
-//   for (let i = 1; i < item.length; i += 2) {
-//     j.splice(i, 0, "   ");
-//   }
-//   return j;
-// }
+  // for (let i = 1; i < item.length; i += 2) {
+  //   j.splice(i, 0, "   ");
+  // }
+  // return j;
+  if(item!=null&&item.length>0)
+  {
+    return item.reduce((previous,current)=>previous.trim()+" "+current.trim()).trim()
+  }
+  return ""
+}
 
 
 
@@ -442,8 +447,8 @@ const MealInfoTable = () => {
                         color="text.primary"
                         gutterBottom
                       >
-                        {//AddSpace(mealInfo.ingredient)
-                        ingredient_Change
+                        {AddSpace(mealInfo.ingredient)
+                        //ingredient_Change
                         }
 
                       </Typography>
@@ -456,8 +461,8 @@ const MealInfoTable = () => {
                         color="text.primary"
                         gutterBottom
                       >
-                        {//AddSpace(mealInfo.tags)
-                        tags_Change
+                        {AddSpace(mealInfo.tags)
+                        //tags_Change
                         }
 
                       </Typography>
