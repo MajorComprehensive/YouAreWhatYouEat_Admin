@@ -125,14 +125,14 @@ const ButtonSearch = styled(Button)(
 );
 
 
-const AddSpace = (item: string[]) => {
-  let j: string[] = item;
+// const AddSpace = (item: string[]) => {
+//   let j: string[] = item;
 
-  for (let i = 1; i < item.length; i += 2) {
-    j.splice(i, 0, "   ");
-  }
-  return j;
-}
+//   for (let i = 1; i < item.length; i += 2) {
+//     j.splice(i, 0, "   ");
+//   }
+//   return j;
+// }
 
 
 
@@ -442,7 +442,8 @@ const MealInfoTable = () => {
                         color="text.primary"
                         gutterBottom
                       >
-                        {AddSpace(mealInfo.ingredient)}
+                        {//AddSpace(mealInfo.ingredient)
+                        }
 
                       </Typography>
 
@@ -454,7 +455,8 @@ const MealInfoTable = () => {
                         color="text.primary"
                         gutterBottom
                       >
-                        {AddSpace(mealInfo.tags)}
+                        {//AddSpace(mealInfo.tags)
+                        }
 
                       </Typography>
 
