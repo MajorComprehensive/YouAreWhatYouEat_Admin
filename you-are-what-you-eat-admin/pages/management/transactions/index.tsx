@@ -11,7 +11,7 @@ function ApplicationsTransactions() {
   return (
     <>
       <Head>
-        <title>Transactions - Applications</title>
+        <title>订单管理</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />

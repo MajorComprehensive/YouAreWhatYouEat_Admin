@@ -11,7 +11,7 @@ function ApplicationsVIP() {
   return (
     <>
       <Head>
-        <title>VIP - Applications</title>
+        <title>会员管理</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
