@@ -452,12 +452,13 @@ const CurOrderTable = () => {
 
                     <Box p={2}>
                         {
+                            //TODO
                             AllDishes - AllFinishedDishes > 0 && <Grid container spacing={3}>
                                 {
                                     CurOrders.map((i) => {
                                         if (countOrder(i) != i.dish.length) {
                                             return (
-                                                < Grid item xs={4} >
+                                                < Grid item xs={12} >
                                                     <CheckList
                                                         order_id={i.order_id}
                                                         order_status={i.order_status}

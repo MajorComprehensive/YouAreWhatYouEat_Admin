@@ -20,6 +20,7 @@ import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
 import { DishStatusUpload, OrderStatusUpload } from "@/models/cur_order";
 
 import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
+import OrderTimer from './OrderTimer';
 
 
 
@@ -102,82 +103,93 @@ export default function CheckList(curOrder: CurOrder) {
 
                 <Divider />
                 <CardContent>
-                    <List
-                        sx={{ width: '100%', maxWidth: 350, bgcolor: 'background.paper' }}
-                    >
-                        {
+                    <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                            <List
+                            sx={{ width: '100%', maxWidth: 350, bgcolor: 'background.paper' ,textAlign:'center'}}
+                            >
+                            {
 
-                            curOrder.dish.map((item, index) => {
+                                curOrder.dish.map((item, index) => {
 
-                                return (
-                                    <ListItem divider>
-                                        <ListItemText id={item.dish_name} primary={item.dish_name + "----备注:" + item.remark} />
-                                        <Switch
-                                            defaultChecked={check(item)}
-                                            disabled={checked[index]}
-                                            {...label}
-                                            inputProps={{
-                                                'aria-labelledby': item.dish_name,
-                                            }}
-                                            onChange={() => {
-                                                let a: boolean[] = [];
-                                                a = checked;
-                                                a[index] = true;
-                                                setChecked(a);
-                                                const conduct1 = async () => {
-                                                    s.dish_order_id = item.dish_order_id;
-                                                    s.dish_status = "已完成"
-                                                    return curOrderApi.updateDishStatus(
-                                                        s
-                                                    );
-                                                }
-                                                const conduct2 = async () => {
-                                                    b.order_id = curOrder.order_id;
-                                                    b.order_status = "已完成"
-                                                    return curOrderApi.updateOrderStatus(
-                                                        b
-                                                    );
-                                                }
-                                                setFinished(finished + 1);
-                                                console.log("finished");
-                                                console.log(finished / curOrder.dish.length);
-                                                conduct1().then((value) => {
-                                                    ;
-                                                }).catch((value) => {
-
-                                                    alert("失败：" + value);
-                                                });
-                                                console.log("完成没？");
-                                                console.log(countUnFinished(curOrder));
-                                                if (finished + 1 == curOrder.dish.length) {
-                                                    if (curOrder.order_status == "已支付") {
-                                                        alert("该订单已完成");
-                                                        window.location.reload();
-
+                                    return (
+                                        <ListItem divider>
+                                            <ListItemText id={item.dish_name} primary={item.dish_name + "----备注:" + item.remark} />
+                                            <Switch
+                                                defaultChecked={check(item)}
+                                                disabled={checked[index]}
+                                                {...label}
+                                                inputProps={{
+                                                    'aria-labelledby': item.dish_name,
+                                                }}
+                                                onChange={() => {
+                                                    let a: boolean[] = [];
+                                                    a = checked;
+                                                    a[index] = true;
+                                                    setChecked(a);
+                                                    const conduct1 = async () => {
+                                                        s.dish_order_id = item.dish_order_id;
+                                                        s.dish_status = "已完成"
+                                                        return curOrderApi.updateDishStatus(
+                                                            s
+                                                        );
                                                     }
-                                                    else {
-                                                        conduct2().then((value) => {
+                                                    const conduct2 = async () => {
+                                                        b.order_id = curOrder.order_id;
+                                                        b.order_status = "已完成"
+                                                        return curOrderApi.updateOrderStatus(
+                                                            b
+                                                        );
+                                                    }
+                                                    setFinished(finished + 1);
+                                                    console.log("finished");
+                                                    console.log(finished / curOrder.dish.length);
+                                                    conduct1().then((value) => {
+                                                        ;
+                                                    }).catch((value) => {
 
-                                                            alert("该订单已完成：" + value);
+                                                        alert("失败：" + value);
+                                                    });
+                                                    console.log("完成没？");
+                                                    console.log(countUnFinished(curOrder));
+                                                    if (finished + 1 == curOrder.dish.length) {
+                                                        if (curOrder.order_status == "已支付") {
+                                                            alert("该订单已完成");
                                                             window.location.reload();
 
-                                                        }).catch((value) => {
+                                                        }
+                                                        else {
+                                                            conduct2().then((value) => {
 
-                                                            alert("失败：" + value);
-                                                        });
+                                                                alert("该订单已完成：" + value);
+                                                                window.location.reload();
+
+                                                            }).catch((value) => {
+
+                                                                alert("失败：" + value);
+                                                            });
+                                                        }
+
                                                     }
 
-                                                }
+                                                }} />
 
-                                            }} />
+                                        </ListItem>
+                                    )
+                                }
 
-                                    </ListItem>
                                 )
                             }
-
-                            )
-                        }
-                    </List>
+                            </List>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Box>
+                                <OrderTimer/>
+                            </Box>
+                        </Grid>    
+                    
+                    </Grid>
+                    
                 </CardContent>
                 <LinearProgressWrapper
                     value={Math.round((finished / curOrder.dish.length) * 100)}
@@ -195,10 +207,19 @@ export default function CheckList(curOrder: CurOrder) {
                     <CardHeader title={"订单号：" + curOrder.order_id} />
                 </div>
                 <Box p={2} >
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} >
+                        <Grid item xs={12}>
+                            <Box>
+                                <OrderTimer/>
+                            </Box>
+                        </Grid>  
+                        
                         <Grid xs={4.5}>
                             <Button></Button>
                         </Grid>
+
+                        <Divider/>
+
                         <Grid xs={6}>
 
                             <Button
