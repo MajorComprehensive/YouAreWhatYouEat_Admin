@@ -26,7 +26,6 @@ import { CurOrder } from '@/models/cur_order'
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 
 import { useRefMounted } from '@/hooks/useRefMounted';
-import GaugeChart from 'react-gauge-chart';
 import { curOrderApi } from '@/queries/cur_order'
 import {
 
@@ -243,7 +242,7 @@ const OrderTimer = (props:OrderTimerProps) => {
     return (
         <Card>
                     {
-                    RemainingTime>=0? //TODO 之后要改回>0，在剩余为0时的展示也要修改
+                    RemainingTime>0?
                     <Grid container spacing={2} justifyContent={'space-evenly'}>
                     <Grid
                         xs={12}
@@ -253,7 +252,12 @@ const OrderTimer = (props:OrderTimerProps) => {
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <GaugeChart id="gauge-chart1" textColor="#010101" percent={0.65} arcPadding={0} cornerRadius={0} nrOfLevels={2} colors={["#FF0017", "#eceaea"]} arcsLength={[0.4, 0.25]}  />
+                        <Chart
+                            height={250}
+                            options={chartOptions}
+                            series={chartSeries}
+                            type="donut"
+                        />
                     </Grid>
                     <Grid xs={4} sm={4} item display="flex" alignItems="center">
                         <List
@@ -279,7 +283,6 @@ const OrderTimer = (props:OrderTimerProps) => {
                         </List>
                     </Grid>
                 </Grid>
-
 
                 :
 
