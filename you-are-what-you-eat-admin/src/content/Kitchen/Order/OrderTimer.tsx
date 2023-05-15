@@ -173,6 +173,11 @@ const OrderTimer = (props:OrderTimerProps) => {
         console.log("Timer start");
     }
 
+    function delay()
+    {
+        changeRemainingTime(RemainingTime+600);
+    }
+
     const isMountedRef = useRefMounted();
 
     const getAllData = useCallback(async () => {
@@ -329,7 +334,16 @@ const OrderTimer = (props:OrderTimerProps) => {
                                     }}
                                 />
                             </ListItem>
+                            <ListItem disableGutters>
+                                <ListItemText
+                                    primary="桌号："
+                                    primaryTypographyProps={{ variant: 'h5', noWrap: true }}
+                                />
+                            </ListItem>
                         </List>
+                    </Grid>
+                    <Grid xs={12} columnSpacing={{ xs: 1, sm: 2, md: 3 }} item display="flex" justifyContent="center"  alignItems="center">
+                        <Button onClick={delay}>延迟10分钟</Button>
                     </Grid>
                 </Grid>
                     
