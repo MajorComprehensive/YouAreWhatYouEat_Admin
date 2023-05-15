@@ -186,7 +186,7 @@ export default function CheckList(curOrder: CurOrder) {
                         <Grid item xs={6}>
                             <Box>
                                 <OrderTimer 
-                                    orderTime="2023-05-13 21:09:47"
+                                    orderTime="2023-05-15 17:50:47"
                                     isVip={false}
                                 />
                             </Box>
@@ -215,7 +215,7 @@ export default function CheckList(curOrder: CurOrder) {
                         <Grid item xs={12}>
                             <Box>
                                 <OrderTimer
-                                    orderTime="2023-05-13 21:09:47" 
+                                    orderTime="2023-05-15 17:50:47" 
                                     isVip={false}
                                 />
                             </Box>

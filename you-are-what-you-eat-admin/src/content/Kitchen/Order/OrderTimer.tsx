@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
+import { FC, ChangeEvent, useState, useEffect, useCallback, useRef } from 'react'
 import {
     Box,
     Grid,
@@ -143,6 +143,35 @@ export interface OrderTimerProps {
 
 
 const OrderTimer = (props:OrderTimerProps) => {
+    const intervalRef = useRef<any>(null);
+  
+    const [RemainingTime, changeRemainingTime] = useState(0);
+    const [counting, changeCounting] = useState(false);
+    
+    // 组件卸载时清除计时器
+    useEffect(() => {
+      return () => {
+        clearInterval(intervalRef.current);
+      };
+    }, []);
+  
+    useEffect(() => {
+      if (RemainingTime > 0 && !counting) {
+        startTimer();
+        console.log("Timer start");
+      } else if (RemainingTime === 0) {
+        clearInterval(intervalRef.current);
+      }
+    }, [counting]);
+
+    function startTimer()
+    {
+        changeCounting(true);
+        intervalRef.current = setInterval(() => {
+            changeRemainingTime((preCount) => preCount - 1);
+        }, 1000);
+        console.log("Timer start");
+    }
 
     const isMountedRef = useRefMounted();
 
@@ -150,8 +179,10 @@ const OrderTimer = (props:OrderTimerProps) => {
         try {
             // let curOrders = await curOrderApi.getCurOrder();
             if (isMountedRef()) {
-
-
+                
+                
+                //setCount(calculateTimePast(props.orderTime));
+                //console.log("Mounted")
             }
         } catch (err) {
             console.error(err);
@@ -160,6 +191,8 @@ const OrderTimer = (props:OrderTimerProps) => {
 
     useEffect(() => {
         getAllData();
+        changeRemainingTime(TotalTime-TimePast > 0 ? TotalTime-TimePast : 0);
+        startTimer();
         //console.log("time left:")
         //console.log(calculateTimeLeft(props.orderTime))
     }, [getAllData]);
@@ -235,15 +268,11 @@ const OrderTimer = (props:OrderTimerProps) => {
     };
     let TotalTime=props.isVip?1200:1800;
     let TimePast=calculateTimePast(props.orderTime)
-    let RemainingTime=TotalTime-TimePast > 0 ? TotalTime-TimePast : 0
-    let m = Math.round(((TotalTime - RemainingTime) / TotalTime) * 100);
-    let n = Math.round((RemainingTime / TotalTime) * 100);
-    const chartSeries = [m, n];
+    //let RemainingTime=TotalTime-TimePast > 0 ? TotalTime-TimePast : 0
 
     return (
+        
         <Card>
-                    {
-                    RemainingTime>=0? //TODO 之后要改回>0，在剩余为0时的展示也要修改
                     <Grid container spacing={2} justifyContent={'space-evenly'}>
                     <Grid
                         xs={12}
@@ -253,7 +282,17 @@ const OrderTimer = (props:OrderTimerProps) => {
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <GaugeChart id="gauge-chart1" textColor="#010101" percent={0.65} arcPadding={0} cornerRadius={0} nrOfLevels={2} colors={["#FF0017", "#eceaea"]} arcsLength={[0.4, 0.25]}  />
+                        <GaugeChart 
+                            id="gauge-chart1" 
+                            textColor="#010101" 
+                            percent={RemainingTime / TotalTime} 
+                            arcPadding={0} 
+                            cornerRadius={0} 
+                            nrOfLevels={2} 
+                            colors={["#FF0017", "#eceaea"]} 
+                            arcsLength={[RemainingTime / TotalTime, 1-RemainingTime / TotalTime]} 
+                            animate={true} 
+                        />
                     </Grid>
                     <Grid xs={4} sm={4} item display="flex" alignItems="center">
                         <List
@@ -269,41 +308,30 @@ const OrderTimer = (props:OrderTimerProps) => {
                                 <ListItemText
                                     primary="剩余时间"
                                     primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                                    secondary={(RemainingTime).toString()}
+                                    secondary={Math.floor(RemainingTime/60).toString()+"分"+(RemainingTime%60).toString()+"秒"}
                                     secondaryTypographyProps={{
                                         variant: 'subtitle2',
                                         noWrap: true
                                     }}
                                 />
                             </ListItem>
+                            <ListItem disableGutters>
+                                <ListItemAvatarWrapper>
+                                    <AccessAlarmIcon/>
+                                </ListItemAvatarWrapper>
+                                <ListItemText
+                                    primary="创建时间"
+                                    primaryTypographyProps={{ variant: 'h5', noWrap: true }}
+                                    secondary={props.orderTime}
+                                    secondaryTypographyProps={{
+                                        variant: 'subtitle2',
+                                        noWrap: false
+                                    }}
+                                />
+                            </ListItem>
                         </List>
                     </Grid>
                 </Grid>
-
-
-                :
-
-                <Grid xs={4} sm={4} item display="flex" alignItems="center">
-                <List
-                    disablePadding
-                >
-                    <ListItem disableGutters>
-                        <ListItemAvatarWrapper>
-                            <AccessAlarmIcon/>
-                        </ListItemAvatarWrapper>
-                        <ListItemText
-                            primary="已超时"
-                            primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                            secondaryTypographyProps={{
-                                variant: 'subtitle2',
-                                noWrap: true
-                            }}
-                        />
-                    </ListItem>
-                </List>
-            </Grid>            
-
-                }
                     
                 </Card>
 
