@@ -18,6 +18,7 @@ import Button from '@mui/material/Button';
 import { curOrderApi } from '@/queries/cur_order';
 import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
 import { DishStatusUpload, OrderStatusUpload } from "@/models/cur_order";
+import { OrderTimerProps } from './OrderTimer';
 
 import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
 import OrderTimer from './OrderTimer';
@@ -184,7 +185,10 @@ export default function CheckList(curOrder: CurOrder) {
                         </Grid>
                         <Grid item xs={6}>
                             <Box>
-                                <OrderTimer/>
+                                <OrderTimer 
+                                    orderTime="2023-05-13 21:09:47"
+                                    isVip={false}
+                                />
                             </Box>
                         </Grid>    
                     
@@ -210,7 +214,10 @@ export default function CheckList(curOrder: CurOrder) {
                     <Grid container spacing={2} >
                         <Grid item xs={12}>
                             <Box>
-                                <OrderTimer/>
+                                <OrderTimer
+                                    orderTime="2023-05-13 21:09:47" 
+                                    isVip={false}
+                                />
                             </Box>
                         </Grid>  
                         

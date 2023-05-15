@@ -115,10 +115,33 @@ interface CurOrderTableProps {
     CurOrders: CurOrder[];
 }
 
+//计算剩余时间(秒)
+function calculateTimePast(creationTime: string) 
+{
+    const difference = Date.now() - Date.parse(creationTime);
+    let timeLeft = {};
+    let seconds:number;
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
+      };
+      seconds=Math.floor((difference / 1000))
+    }
+
+    return seconds;
+};
+
+export interface OrderTimerProps {
+    orderTime:string, 
+    isVip:boolean
+  }
 
 
-const OrderTimer = () => {
-
+const OrderTimer = (props:OrderTimerProps) => {
 
     const isMountedRef = useRefMounted();
 
@@ -136,6 +159,8 @@ const OrderTimer = () => {
 
     useEffect(() => {
         getAllData();
+        //console.log("time left:")
+        //console.log(calculateTimeLeft(props.orderTime))
     }, [getAllData]);
 
 
@@ -207,54 +232,82 @@ const OrderTimer = () => {
             mode: theme.palette.mode
         }
     };
-    let TotalTime=300;
-    let RemainingTime=300
+    let TotalTime=props.isVip?1200:1800;
+    let TimePast=calculateTimePast(props.orderTime)
+    let RemainingTime=TotalTime-TimePast > 0 ? TotalTime-TimePast : 0
     let m = Math.round(((TotalTime - RemainingTime) / TotalTime) * 100);
     let n = Math.round((RemainingTime / TotalTime) * 100);
     const chartSeries = [m, n];
 
     return (
         <Card>
+                    {
+                    RemainingTime>0?
                     <Grid container spacing={2} justifyContent={'space-evenly'}>
-                                    <Grid
-                                        xs={12}
-                                        sm={5}
-                                        item
-                                        display="flex"
-                                        justifyContent="center"
-                                        alignItems="center"
-                                    >
-                                        <Chart
-                                            height={250}
-                                            options={chartOptions}
-                                            series={chartSeries}
-                                            type="donut"
-                                        />
-                                    </Grid>
-                                    <Grid xs={4} sm={4} item display="flex" alignItems="center">
-                                        <List
-                                            disablePadding
-                                            sx={{
-                                                width: '100%'
-                                            }}
-                                        >
-                                            <ListItem disableGutters>
-                                                <ListItemAvatarWrapper>
-                                                    <AccessAlarmIcon/>
-                                                </ListItemAvatarWrapper>
-                                                <ListItemText
-                                                    primary="剩余时间"
-                                                    primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                                                    secondary={(RemainingTime).toString()}
-                                                    secondaryTypographyProps={{
-                                                        variant: 'subtitle2',
-                                                        noWrap: true
-                                                    }}
-                                                />
-                                            </ListItem>
-                                        </List>
-                                    </Grid>
-                                </Grid>
+                    <Grid
+                        xs={12}
+                        sm={5}
+                        item
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Chart
+                            height={250}
+                            options={chartOptions}
+                            series={chartSeries}
+                            type="donut"
+                        />
+                    </Grid>
+                    <Grid xs={4} sm={4} item display="flex" alignItems="center">
+                        <List
+                            disablePadding
+                            sx={{
+                                width: '100%'
+                            }}
+                        >
+                            <ListItem disableGutters>
+                                <ListItemAvatarWrapper>
+                                    <AccessAlarmIcon/>
+                                </ListItemAvatarWrapper>
+                                <ListItemText
+                                    primary="剩余时间"
+                                    primaryTypographyProps={{ variant: 'h5', noWrap: true }}
+                                    secondary={(RemainingTime).toString()}
+                                    secondaryTypographyProps={{
+                                        variant: 'subtitle2',
+                                        noWrap: true
+                                    }}
+                                />
+                            </ListItem>
+                        </List>
+                    </Grid>
+                </Grid>
+
+                :
+
+                <Grid xs={4} sm={4} item display="flex" alignItems="center">
+                <List
+                    disablePadding
+                >
+                    <ListItem disableGutters>
+                        <ListItemAvatarWrapper>
+                            <AccessAlarmIcon/>
+                        </ListItemAvatarWrapper>
+                        <ListItemText
+                            primary="已超时"
+                            primaryTypographyProps={{ variant: 'h5', noWrap: true }}
+                            secondaryTypographyProps={{
+                                variant: 'subtitle2',
+                                noWrap: true
+                            }}
+                        />
+                    </ListItem>
+                </List>
+            </Grid>            
+
+                }
+                    
                 </Card>
 
     )
