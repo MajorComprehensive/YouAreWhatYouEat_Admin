@@ -135,10 +135,10 @@ const OrderSummary: FC<OrderSummaryProps> = ({ cryptoSummary }) => {
   };
 
   const chartSeries = [
-    cryptoSummary.awaiting_count / cryptoSummary.order_count,
-    cryptoSummary.processing_count / cryptoSummary.order_count,
-    cryptoSummary.completed_count / cryptoSummary.order_count,
-    cryptoSummary.payed_count / cryptoSummary.order_count
+    Number((cryptoSummary.awaiting_count / cryptoSummary.order_count).toFixed(3)),
+    Number((cryptoSummary.processing_count / cryptoSummary.order_count).toFixed(3)),
+    Number((cryptoSummary.completed_count / cryptoSummary.order_count).toFixed(3)),
+    Number((cryptoSummary.payed_count / cryptoSummary.order_count).toFixed(3))
   ];
 
   return (
