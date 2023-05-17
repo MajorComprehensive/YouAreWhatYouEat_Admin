@@ -14,7 +14,7 @@ function PageHeader() {
           订单管理
         </Typography>
         <Typography variant="subtitle2">
-          查看并管理全部订单，并实时控制订单进度
+          查看并管理全部订单
         </Typography>
       </Grid>
       <Grid item>

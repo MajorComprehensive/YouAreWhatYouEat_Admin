@@ -27,13 +27,7 @@ import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 
 import { useRefMounted } from '@/hooks/useRefMounted';
 import GaugeChart from 'react-gauge-chart';
-import { curOrderApi } from '@/queries/cur_order'
 import {
-
-    Typography,
-    useTheme,
-
-    Avatar,
 
     alpha,
     ListItem,
@@ -41,29 +35,7 @@ import {
     List,
     ListItemAvatar
 } from '@mui/material';
-import TrendingUp from '@mui/icons-material/TrendingUp';
 
-import { Chart } from 'src/components/Chart';
-import type { ApexOptions } from 'apexcharts';
-import Brightness1Icon from '@mui/icons-material/Brightness1';
-
-
-import { number } from 'yup/lib/locale';
-import curOrder from 'pages/kitchen/order';
-import { count } from 'console'
-
-
-
-
-const AvatarSuccess = styled(Avatar)(
-    ({ theme }) => `
-        background-color: ${theme.colors.success.main};
-        color: ${theme.palette.success.contrastText};
-        width: ${theme.spacing(8)};
-        height: ${theme.spacing(8)};
-        box-shadow: ${theme.colors.shadows.success};
-  `
-);
 
 const ListItemAvatarWrapper = styled(ListItemAvatar)(
     ({ theme }) => `
@@ -89,32 +61,6 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
     }
   `
 );
-
-const ButtonSearch = styled(Button)(
-    ({ theme }) => `
-      margin-right: -${theme.spacing(1)};
-  `
-);
-
-const OutlinedInputWrapper = styled(OutlinedInput)(
-    ({ theme }) => `
-      background-color: ${theme.colors.alpha.white[100]};
-  `
-);
-
-const applyPagination = (
-    curOrders: CurOrder[],
-    page: number,
-    limit: number
-): CurOrder[] => {
-    return curOrders.slice(page * limit, page * limit + limit);
-};
-
-
-interface CurOrderTableProps {
-    lassName?: string;
-    CurOrders: CurOrder[];
-}
 
 //计算剩余时间(秒)
 function calculateTimePast(creationTime: string) 
@@ -184,10 +130,7 @@ const OrderTimer = (props:OrderTimerProps) => {
         try {
             // let curOrders = await curOrderApi.getCurOrder();
             if (isMountedRef()) {
-                
-                
-                //setCount(calculateTimePast(props.orderTime));
-                //console.log("Mounted")
+
             }
         } catch (err) {
             console.error(err);
@@ -198,82 +141,10 @@ const OrderTimer = (props:OrderTimerProps) => {
         getAllData();
         changeRemainingTime(TotalTime-TimePast > 0 ? TotalTime-TimePast : 0);
         startTimer();
-        //console.log("time left:")
-        //console.log(calculateTimeLeft(props.orderTime))
     }, [getAllData]);
 
-
-    const theme = useTheme();
-
-    const chartOptions: ApexOptions = {
-        chart: {
-            background: 'transparent',
-            stacked: false,
-            toolbar: {
-                show: false
-            }
-        },
-        plotOptions: {
-            pie: {
-                donut: {
-                    size: '60%'
-                }
-            }
-        },
-        colors: ['#FFA500', '#008000'],
-        dataLabels: {
-            enabled: true,
-            formatter: function (val) {
-                return val + '%';
-            },
-            style: {
-                colors: [theme.colors.alpha.trueWhite[100]]
-            },
-            background: {
-                enabled: true,
-                foreColor: theme.colors.alpha.trueWhite[100],
-                padding: 8,
-                borderRadius: 4,
-                borderWidth: 0,
-                opacity: 0.3,
-                dropShadow: {
-                    enabled: true,
-                    top: 1,
-                    left: 1,
-                    blur: 1,
-                    color: theme.colors.alpha.black[70],
-                    opacity: 0.5
-                }
-            },
-            dropShadow: {
-                enabled: true,
-                top: 1,
-                left: 1,
-                blur: 1,
-                color: theme.colors.alpha.black[50],
-                opacity: 0.5
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        labels: ['已经过', '剩余'],
-        legend: {
-            labels: {
-                colors: theme.colors.alpha.trueWhite[100]
-            },
-            show: false
-        },
-        stroke: {
-            width: 0
-        },
-        theme: {
-            mode: theme.palette.mode
-        }
-    };
     let TotalTime=props.isVip?1200:1800;
     let TimePast=calculateTimePast(props.orderTime)
-    //let RemainingTime=TotalTime-TimePast > 0 ? TotalTime-TimePast : 0
 
     return (
         
@@ -296,7 +167,7 @@ const OrderTimer = (props:OrderTimerProps) => {
                             nrOfLevels={2} 
                             colors={["#FF0017", "#eceaea"]} 
                             arcsLength={[RemainingTime / TotalTime, 1-RemainingTime / TotalTime]} 
-                            animate={true} 
+                            animate={true}
                         />
                     </Grid>
                     <Grid xs={4} sm={4} item display="flex" alignItems="center">
@@ -354,23 +225,3 @@ const OrderTimer = (props:OrderTimerProps) => {
 
 
 export default OrderTimer;
-
-/*//模板代码，安装还需要适配
-<div className="row mt-5">
-<div className="col-xl-5 col-lg-12">
-<div className="d-flex align-items-center mb-2">
-    <div className="icon-holder bg-primary text-white py-1 px-3 rounded mr-2">
-    <i className="mdi mdi-buffer icon-sm"></i>
-    </div>
-    <h2 className="font-weight-semibold mb-0">3,605</h2>
-</div>
-<p>Since last week</p>
-<p className="mb-3 mb-lg-0"><span className="font-weight-medium">0.51%</span> (30 days)</p>
-</div>
-<div className="col-xl-7 col-lg-12">
-<div className="mt-n3 ml-auto" id="dashboard-guage-chart"></div>
-<GaugeChart id="gauge-chart1" textColor="#010101" percent={0.65} arcPadding={0} cornerRadius={0} nrOfLevels={2} colors={["#FF0017", "#eceaea"]} arcsLength={[0.4, 0.25]}  />
-</div>
-</div>
-
-*/
