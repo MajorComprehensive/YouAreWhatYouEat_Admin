@@ -18,7 +18,7 @@ import Skeleton from '@mui/material/Skeleton';
 import VIPListTableSkeleton from './VIPListTableSkeleton';
 
 function VIPPage() {
-  const [expanded, setExpanded] = useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>('panel1');
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);

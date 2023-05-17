@@ -25,7 +25,7 @@ import TableSummarySkeleton from './TableSummarySkeleton';
 import TableListTableSkeleton from './TableListTableSkeleton';
 
 function TablePage() {
-  const [expanded, setExpanded] = useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>('panel1');
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);

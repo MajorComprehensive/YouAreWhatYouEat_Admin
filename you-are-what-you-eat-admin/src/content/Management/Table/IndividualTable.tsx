@@ -169,7 +169,7 @@ export default function IndividualTable(props: IndiTableProps) {
 
     let confirmData: CryptoTable = {
       table_id: props.table_id,
-      customer_number: inputNum,
+      customer_number: 0,
       table_capacity: props.table_capacity,
       occupied: '否'
     };
