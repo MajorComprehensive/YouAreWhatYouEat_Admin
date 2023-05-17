@@ -105,7 +105,9 @@ export default function IndividualTable(props: IndiTableProps) {
 
   const theme = useTheme();*/
   const [open, setOpen] = React.useState(false);
+  const [open_occ, setOpenOcc] = React.useState(false);
   const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
+  const [openOccDialog, setOpenOccDialog] = React.useState(false);
   const [openErrorDialog, setOpenErrorDialog] = React.useState(false);
   const [inputNum, setInputNum] = useState<number>(1);
   const [orderData, setOrderData] = useState<CryptoOrder>(null);
@@ -113,9 +115,14 @@ export default function IndividualTable(props: IndiTableProps) {
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const handleClickOpenOcc = () => {
+    setOpenOcc(true);
+  };
   const handleClose = () => {
     setOpen(false);
+    setOpenOcc(false);
     setOpenSuccessDialog(false);
+    setOpenOccDialog(false);
     setOpenErrorDialog(false);
   };
   const handleSuccessClose = () => {
@@ -150,6 +157,27 @@ export default function IndividualTable(props: IndiTableProps) {
       let res = await queryTableApi.setTable(confirmData);
       console.log(res);
       setOpenSuccessDialog(true);
+    } catch (err) {
+      console.error(err);
+      setOpenErrorDialog(true);
+    }
+
+  };
+
+  const handleReleaseConfirm = async () => {
+    console.log('release confirm');
+
+    let confirmData: CryptoTable = {
+      table_id: props.table_id,
+      customer_number: inputNum,
+      table_capacity: props.table_capacity,
+      occupied: '否'
+    };
+
+    try {
+      let res = await queryTableApi.setTable(confirmData);
+      console.log(res);
+      setOpenOccDialog(true);
     } catch (err) {
       console.error(err);
       setOpenErrorDialog(true);
@@ -204,7 +232,7 @@ export default function IndividualTable(props: IndiTableProps) {
               size="small"
               color="error"
               //disabled
-              //onClick={handleClickOpen}
+              onClick={handleClickOpenOcc}
             >
               {'已有' + props.customer_number + '人使用'}
             </Button>
@@ -288,6 +316,41 @@ export default function IndividualTable(props: IndiTableProps) {
         )}
       </BootstrapDialog>
 
+      <BootstrapDialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open_occ}
+      >
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleClose}
+        >
+          释放餐桌: {props.table_id}
+        </BootstrapDialogTitle>
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 2, width: '30ch' }
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleClose}
+        >
+          请确认该餐桌已无人使用
+        </BootstrapDialogTitle>
+          
+        </Box>
+        <Button
+            startIcon={<AddTwoToneIcon fontSize="small" />}
+            onClick={handleReleaseConfirm}
+          >
+            确认释放
+        </Button>
+      </BootstrapDialog>
+
       <Dialog
         open={openSuccessDialog}
         onClose={handleClose}
@@ -298,6 +361,25 @@ export default function IndividualTable(props: IndiTableProps) {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             安排该顾客至座位: {props.table_id}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSuccessClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openOccDialog}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'安排成功'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            该座位已释放
           </DialogContentText>
         </DialogContent>
         <DialogActions>
