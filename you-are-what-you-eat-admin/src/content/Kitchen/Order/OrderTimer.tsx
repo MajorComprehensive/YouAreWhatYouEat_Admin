@@ -177,7 +177,9 @@ const OrderTimer = (props:OrderTimerProps) => {
                                 width: '100%'
                             }}
                         >
-                            <ListItem disableGutters>
+                            {
+                               RemainingTime>0? 
+                                <ListItem disableGutters>
                                 <ListItemAvatarWrapper>
                                     <AccessAlarmIcon/>
                                 </ListItemAvatarWrapper>
@@ -191,6 +193,22 @@ const OrderTimer = (props:OrderTimerProps) => {
                                     }}
                                 />
                             </ListItem>
+                            :
+                            <ListItem disableGutters>
+                                <ListItemAvatarWrapper>
+                                    <AccessAlarmIcon color='error'/>
+                                </ListItemAvatarWrapper>
+                                <ListItemText
+                                    primary="该订单已超时!"
+                                    primaryTypographyProps={{ variant: 'h5', noWrap: true ,color:'error'}}
+                                    secondary="请尽快处理"
+                                    secondaryTypographyProps={{
+                                        variant: 'subtitle2',
+                                        noWrap: true
+                                    }}
+                                />
+                            </ListItem>
+                            }
                             <ListItem disableGutters>
                                 <ListItemAvatarWrapper>
                                     <AccessAlarmIcon/>
@@ -214,7 +232,12 @@ const OrderTimer = (props:OrderTimerProps) => {
                         </List>
                     </Grid>
                     <Grid xs={12} columnSpacing={{ xs: 1, sm: 2, md: 3 }} item display="flex" justifyContent="center"  alignItems="center">
-                        <Button onClick={delay}>延迟10分钟</Button>
+                        {
+                            RemainingTime>0?
+                            <Button onClick={delay}>延迟10分钟</Button>
+                            :
+                            <Button disabled={true} color="error">订单已超时</Button>
+                        }
                     </Grid>
                 </Grid>
                     
