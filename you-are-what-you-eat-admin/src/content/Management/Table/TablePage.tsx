@@ -26,9 +26,14 @@ import TableListTableSkeleton from './TableListTableSkeleton';
 
 function TablePage() {
   const [expanded, setExpanded] = useState<string | false>('panel1');
+  const [expanded2, setExpanded2] = useState<string | false>(false);
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
+    };
+  const handleChange2 =
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded2(isExpanded ? panel : false);
     };
 
   const isMountedRef = useRefMounted();
@@ -107,6 +112,26 @@ function TablePage() {
             </AccordionSummary>
             <AccordionDetails>
               <TableSummary2 cryptoSummary2={tableData.summary2} />
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Accordion
+            expanded={expanded2 === 'panel2'}
+            onChange={handleChange2('panel2')}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <Typography>
+                <b>在3D中预览餐厅</b>
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+            <iframe src="/static/CanteenSim/index.html" allowFullScreen={true} width={"100%"} height={"600px"} scrolling='no'/>
             </AccordionDetails>
           </Accordion>
         </Grid>
