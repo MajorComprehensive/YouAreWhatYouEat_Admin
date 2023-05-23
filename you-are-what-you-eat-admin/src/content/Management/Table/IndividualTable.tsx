@@ -238,7 +238,7 @@ export default function IndividualTable(props: IndiTableProps) {
             </Button>
           )}
           {
-            orderData?
+            props.occupied != '空闲' && orderData?
             <FullOrderView id={orderData.order_id} cryptoOrder={orderData}/>
             :
             <IconButton

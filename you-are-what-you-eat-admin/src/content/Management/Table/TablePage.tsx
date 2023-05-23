@@ -120,6 +120,7 @@ function TablePage() {
           <Accordion
             expanded={expanded2 === 'panel2'}
             onChange={handleChange2('panel2')}
+            TransitionProps={{ unmountOnExit: true }}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -131,7 +132,7 @@ function TablePage() {
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-            <iframe src="/static/CanteenSim/index.html" allowFullScreen={true} width={"100%"} height={"600px"} scrolling='no'/>
+              <iframe src="/static/CanteenSim/index.html" allowFullScreen={true} width={"100%"} height={"600px"} scrolling='no'/>
             </AccordionDetails>
           </Accordion>
         </Grid>
