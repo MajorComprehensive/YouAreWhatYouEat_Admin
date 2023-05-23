@@ -135,8 +135,8 @@ const TableSummary: FC<TableSummaryProps> = ({ cryptoSummary }) => {
   };
 
   const chartSeries = [
-    cryptoSummary.available_count / cryptoSummary.total_count,
-    cryptoSummary.occupied_count / cryptoSummary.total_count
+    Number((cryptoSummary.available_count / cryptoSummary.total_count).toFixed(3)),
+    Number((cryptoSummary.occupied_count / cryptoSummary.total_count).toFixed(3))
   ];
 
   return (
