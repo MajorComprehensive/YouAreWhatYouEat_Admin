@@ -9,12 +9,16 @@ import { MealInfoAdd } from '@/models/meal_info';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function addMealCheckboxes(ing_names: string[], setIngNames: React.Dispatch<React.SetStateAction<string[]>>) {
+export default function addMealCheckboxes(
+  allIngNames: string[],
+  ingNames: string[], 
+  setIngNames: React.Dispatch<React.SetStateAction<string[]>>
+  ) {
   return (
     <Autocomplete
       multiple
       id="checkboxes-tags-demo"
-      options={ing_names}
+      options={allIngNames}
       disableCloseOnSelect
       getOptionLabel={(ing_name) => ing_name}
       renderOption={(props, option, { selected }) => (
@@ -26,9 +30,9 @@ export default function addMealCheckboxes(ing_names: string[], setIngNames: Reac
             checked={selected}
             onChange={(e) => {
                 if (e.target.checked)
-                    setIngNames([...ing_names, e.target.name])
+                    setIngNames([...ingNames, e.target.name])
                 else
-                    setIngNames(ing_names.filter((n) => n != e.target.name));
+                    setIngNames(ingNames.filter((n) => n != e.target.name));
             }}
           />
           {option}

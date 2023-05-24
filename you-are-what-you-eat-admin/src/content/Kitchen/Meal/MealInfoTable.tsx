@@ -56,6 +56,12 @@ const CardCover = styled(Card)(
   `
 );
 
+function strListJoin(ls: string[]) {
+  var ret: string = '';
+  ls.forEach((s) => ret = ret + s + " ");
+  return ret;
+}
+
 const applyPagination = (
   mealInfoes: MealInfo[],
   page: number,
@@ -84,22 +90,25 @@ const ButtonSearch = styled(Button)(
   `
 );
 
-
-const AddSpace = (item: string[]) => {
-  // let j: string[] = item;
-
-  // for (let i = 1; i < item.length; i += 2) {
-  //   j.splice(i, 0, "   ");
-  // }
-  // return j;
-  if (item != null && item.length > 0) {
-    return item.reduce((previous, current) => previous.trim() + " " + current.trim()).trim()
-  }
-  return ""
-}
-
 const MealInfoTable = () => {
+
+  const isMountedRef = useRefMounted();
+  const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
+  const [SearchMealInfoes, setSearchMealInfoes] = useState<MealInfo[]>([]);
+  const [page, setPage] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(5);
+  const [idChange, setidChange] = useState<string>('');
+  const [dis_name_Change, setdis_name_Change] = useState<string>('');
+  const [price_Change, setprice_Change] = useState<number>(0);
+  const [description_Change, setdescription_Change] = useState<string>('');
+  const [idLook, setIdLook] = useState<MealInfo>(null);
+  const paginatedPromotions = applyPagination(MealInfoes, page, limit);
+  const [detailOpen, setdetailOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
   const [judgePrice, setJudgePrice] = React.useState(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const [allIngNames, setAllIngNames] = useState<string[]>([]);
+  const [ingNames, setIngNames] = useState<string[]>([]);
 
   const { t }: { t: any } = useTranslation();
   const nameInputChange = (e) => {
@@ -121,10 +130,6 @@ const MealInfoTable = () => {
     setdescription_Change(e.target.value);
   }
 
-  const isMountedRef = useRefMounted();
-  const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
-  const [SearchMealInfoes, setSearchMealInfoes] = useState<MealInfo[]>([]);
-
   const getAllData = useCallback(async () => {
     try {
       let MealInfoes = await mealInfoApi.getMealInfo();
@@ -132,9 +137,7 @@ const MealInfoTable = () => {
       if (isMountedRef()) {
         setSearchMealInfoes(MealInfoes);
         setMealInfoes(MealInfoes);
-        setIngNames(ig.map((i) => i.ingr_name))
-        console.log('ig:', ig)
-        console.log('IngNames:', ingNames)
+        setAllIngNames(ig.map((i) => i.ingr_name))
       }
     } catch (err) {
       console.error(err);
@@ -145,26 +148,12 @@ const MealInfoTable = () => {
     getAllData();
   }, [getAllData]);
 
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
-  const [idChange, setidChange] = useState<string>('');
-
-  const [dis_name_Change, setdis_name_Change] = useState<string>('');
-  const [price_Change, setprice_Change] = useState<number>(0);
-  const [description_Change, setdescription_Change] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
-  const [ingNames, setIngNames] = useState<string[]>([]);
-  const [idLook, setIdLook] = useState<MealInfo>(null);
-
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage);
-
   };
-
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLimit(parseInt(event.target.value));
   };
-  const [open, setOpen] = React.useState(false);
   const handleClickOpen = (meal: MealInfo) => {
     setOpen(true);
     if (MealInfoes != null && idChange != null) {
@@ -172,26 +161,19 @@ const MealInfoTable = () => {
       setprice_Change(meal.price)
       setdescription_Change(meal.description)
       setTags(meal.tags);
-      setIngNames(meal.ingredient)
+      setIngNames(meal.ingredient);
     }
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-
-
-  const [detailOpen, setdetailOpen] = React.useState(false);
   const handleClickDetailOpen = () => {
     setdetailOpen(true);
-
   };
-
   const handleDetailClose = () => {
     setdetailOpen(false);
   };
-
-  const paginatedPromotions = applyPagination(MealInfoes, page, limit);
 
   const theme = useTheme();
   let newM: MealInfo[] = [];
@@ -199,7 +181,6 @@ const MealInfoTable = () => {
   var Search: string;
 
   let bv = "BV1e5411L7gR";
-  let src = "//player.bilibili.com/player.html?bvid=" + bv + "&high_quality=1&danmaku=0";
 
   const handleSearchChange = (e) => {
     newM = [];
@@ -313,10 +294,7 @@ const MealInfoTable = () => {
                         color="text.primary"
                         gutterBottom
                       >
-                        {AddSpace(mealInfo.ingredient)
-                          //ingredient_Change
-                        }
-
+                        {strListJoin(mealInfo.ingredient)}
                       </Typography>
 
                     </TableCell>
@@ -327,10 +305,7 @@ const MealInfoTable = () => {
                         color="text.primary"
                         gutterBottom
                       >
-                        {AddSpace(mealInfo.tags)
-                          //tags_Change
-                        }
-
+                        {strListJoin(mealInfo.tags)}
                       </Typography>
 
                     </TableCell>
@@ -390,7 +365,7 @@ const MealInfoTable = () => {
                             value={description_Change}
                             onChange={descriptionInputChange}
                           />
-                        {addMealCheckboxes(ingNames, setIngNames)}
+                        {addMealCheckboxes(allIngNames, ingNames, setIngNames)}
                         {addMealTagCheckboxes(tags, setTags)}
                         </DialogContent>
                         <DialogActions>
@@ -548,7 +523,6 @@ MealInfoTable.propTypes = {
 
 MealInfoTable.defaultProps = {
   mealInfoes: []
-
 };
 
 export default MealInfoTable;

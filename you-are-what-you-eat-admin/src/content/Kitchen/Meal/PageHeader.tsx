@@ -89,6 +89,7 @@ function PageHeader() {
     ingredient: [""]
   });
   const [ingNames, setIngNames] = useState<string[]>([]);
+  const [allIngNames, setAllIngNames] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
 
@@ -97,7 +98,7 @@ function PageHeader() {
       let ig = await queryIngredientApi.getIngredientList('');
       if (isMountedRef()) {
         setIng(ig);
-        setIngNames(ig.map((ing) => ing.ingr_name))
+        setAllIngNames(ig.map((ing) => ing.ingr_name))
       }
     } catch (err) {
       console.error(err);
@@ -196,7 +197,7 @@ function PageHeader() {
               variant="standard"
               onChange={descriptionInputChange}
             />
-            {addMealCheckboxes(ingNames, setIngNames)}
+            {addMealCheckboxes(allIngNames, ingNames, setIngNames)}
             {addMealTagCheckboxes(selectedTags, setSelectedTags)}
             <TextField
               autoFocus
