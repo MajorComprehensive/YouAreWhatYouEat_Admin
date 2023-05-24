@@ -146,8 +146,6 @@ function Hero() {
 
                 router.replace("/human_resource/organization");
 
-                
-
               }
 
 

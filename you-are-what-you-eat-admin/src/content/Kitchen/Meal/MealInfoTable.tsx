@@ -43,6 +43,8 @@ import {
 import { queryIngredientApi } from '@/queries/query_ingredient';
 import { IngredientInfo } from '@/models/ingredient_info';
 import { useTranslation } from 'react-i18next';
+import addMealCheckboxes from './addMealCheckBox';
+import addMealTagCheckboxes from './addMealTagCheckBox';
 
 const CardCover = styled(Card)(
   ({ theme }) => `
@@ -99,10 +101,6 @@ const AddSpace = (item: string[]) => {
 const MealInfoTable = () => {
   const [judgePrice, setJudgePrice] = React.useState(false);
 
-  const [judgeIng, setJudgeIng] = React.useState(false);
-
-  let a = [];
-
   const { t }: { t: any } = useTranslation();
   const nameInputChange = (e) => {
     setdis_name_Change(e.target.value);
@@ -122,52 +120,22 @@ const MealInfoTable = () => {
   const descriptionInputChange = (e) => {
     setdescription_Change(e.target.value);
   }
-  const tagsInputChange = (e) => {
-    settags_Change(e.target.value);
-  }
-  const ingInputChange = (e) => {
-    setingredient_Change(e.target.value);
-
-    let j = 1;
-    let temp: string[]
-    temp = e.target.value.split(" ");
-    temp.map((item) => {
-      if (a.indexOf(item) == -1) {
-        j = 0;
-        console.log(item);
-      }
-      if (j == 0) {
-        setJudgeIng(true);
-      }
-      else {
-        setJudgeIng(false);
-      }
-    })
-  }
 
   const isMountedRef = useRefMounted();
   const [MealInfoes, setMealInfoes] = useState<MealInfo[]>([]);
   const [SearchMealInfoes, setSearchMealInfoes] = useState<MealInfo[]>([]);
-  const [ing, setIng] = useState<IngredientInfo[]>([]);
-
 
   const getAllData = useCallback(async () => {
     try {
       let MealInfoes = await mealInfoApi.getMealInfo();
       let ig = await queryIngredientApi.getIngredientList('');
-
-
-
       if (isMountedRef()) {
         setSearchMealInfoes(MealInfoes);
-
         setMealInfoes(MealInfoes);
-        setIng(ig);
-
+        setIngNames(ig.map((i) => i.ingr_name))
+        console.log('ig:', ig)
+        console.log('IngNames:', ingNames)
       }
-
-
-
     } catch (err) {
       console.error(err);
     }
@@ -184,9 +152,8 @@ const MealInfoTable = () => {
   const [dis_name_Change, setdis_name_Change] = useState<string>('');
   const [price_Change, setprice_Change] = useState<number>(0);
   const [description_Change, setdescription_Change] = useState<string>('');
-  const [tags_Change, settags_Change] = useState<string>('');
-  const [ingredient_Change, setingredient_Change] = useState<string>('');
-
+  const [tags, setTags] = useState<string[]>([]);
+  const [ingNames, setIngNames] = useState<string[]>([]);
   const [idLook, setIdLook] = useState<MealInfo>(null);
 
   const handlePageChange = (_event: any, newPage: number): void => {
@@ -204,10 +171,8 @@ const MealInfoTable = () => {
       setdis_name_Change(meal.dis_name);
       setprice_Change(meal.price)
       setdescription_Change(meal.description)
-      if (meal.tags && meal.tags.length > 0)
-        settags_Change(meal.tags.reduce((previous, current) => previous.trim() + " " + current.trim()).trim())
-      if (meal.ingredient && meal.ingredient.length > 0)
-        setingredient_Change(meal.ingredient.reduce((previous, current) => previous.trim() + " " + current.trim()).trim())
+      setTags(meal.tags);
+      setIngNames(meal.ingredient)
     }
   };
 
@@ -251,16 +216,6 @@ const MealInfoTable = () => {
     setMealInfoes(newM);
   }
 
-
-  ing.map((item) => {
-    a.push(item.ingr_name);
-  })
-  console.log("a");
-
-  console.log(ing);
-
-
-  console.log(a);
   return (
     <Card>
       <CardHeader
@@ -435,29 +390,8 @@ const MealInfoTable = () => {
                             value={description_Change}
                             onChange={descriptionInputChange}
                           />
-                          <TextField
-                            autoFocus
-                            margin="dense"
-                            id="tags"
-                            label="新的菜品标签"
-                            fullWidth
-                            variant="standard"
-                            value={tags_Change}
-                            onChange={tagsInputChange}
-                            helperText="人气菜品，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品，根茎菌菇，酒水，甜点小食"
-                          />
-                          <TextField
-                            autoFocus
-                            margin="dense"
-                            id="tags"
-                            label="新的菜品需要的原料"
-                            fullWidth
-                            variant="standard"
-                            value={ingredient_Change}
-                            onChange={ingInputChange}
-                            helperText="请输入现有的原料"
-                            error={judgeIng}
-                          />
+                        {addMealCheckboxes(ingNames, setIngNames)}
+                        {addMealTagCheckboxes(tags, setTags)}
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleClose}>取消</Button>
@@ -468,9 +402,9 @@ const MealInfoTable = () => {
                                 dis_name: dis_name_Change,
                                 price: price_Change,
                                 description: description_Change,
-                                ingredient: ingredient_Change.split(" "),
-                                tags: tags_Change.split(" ")
-                              });
+                                ingredient: ingNames,
+                                tags: tags
+                              }); 
                             }
                             var rex = /^[0-9]+$/;//正则表达式
                             var flag = (rex.test(price_Change.toString()));//通过表达式进行匹配
