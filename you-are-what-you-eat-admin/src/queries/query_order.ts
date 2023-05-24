@@ -1,4 +1,4 @@
-import { CryptoFullOrder,CryptoOrderEdit } from '@/models/crypto_order';
+import { CryptoFullOrder,CryptoOrderEdit,CryptoOrder } from '@/models/crypto_order';
 import { GetApi,PostApi } from 'src/utils/requests';
 
 class QueryOrderApi {
@@ -10,6 +10,20 @@ class QueryOrderApi {
       //return JSON.parse(r) as CryptoFullOrder;
 
       const data = (await GetApi('Order/GetAllOrder')).data;
+      return data;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+
+    //    return Promise.resolve(data);
+  };
+
+  public getOrderById: (orderId : String) => Promise<CryptoOrder> = async (orderId) => {
+    try {
+      const data = (await GetApi('Order/GetOrderById',{
+        order_id: orderId
+      })).data;
       return data;
     } catch (err) {
       console.log(err);

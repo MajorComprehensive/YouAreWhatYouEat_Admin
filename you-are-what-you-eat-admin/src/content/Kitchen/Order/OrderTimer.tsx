@@ -84,7 +84,7 @@ function calculateTimePast(creationTime: string)
 
 export interface OrderTimerProps {
     orderTime:string, 
-    isVip:boolean
+    table : string
   }
 
 
@@ -143,7 +143,7 @@ const OrderTimer = (props:OrderTimerProps) => {
         startTimer();
     }, [getAllData]);
 
-    let TotalTime=props.isVip?1200:1800;
+    let TotalTime=1800;
     let TimePast=calculateTimePast(props.orderTime)
 
     return (
@@ -225,7 +225,7 @@ const OrderTimer = (props:OrderTimerProps) => {
                             </ListItem>
                             <ListItem disableGutters>
                                 <ListItemText
-                                    primary="桌号："
+                                    primary={"桌号：" + props.table}
                                     primaryTypographyProps={{ variant: 'h5', noWrap: true }}
                                 />
                             </ListItem>

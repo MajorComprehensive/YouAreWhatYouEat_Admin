@@ -5,6 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 
 import { CurOrder, Dish } from '@/models/cur_order';
+import { CryptoOrder } from '@/models/crypto_order';
 import { Card, CardHeader, Divider, CardContent, Box } from '@mui/material';
 import {
 
@@ -16,12 +17,15 @@ import {
 import Button from '@mui/material/Button';
 
 import { curOrderApi } from '@/queries/cur_order';
+import { queryOrderApi } from '@/queries/query_order';
 import DishOrderTable from '@/content/Management/Transactions/DishOrderTable';
 import { DishStatusUpload, OrderStatusUpload } from "@/models/cur_order";
 import { OrderTimerProps } from './OrderTimer';
 
 import { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
 import OrderTimer from './OrderTimer';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
@@ -56,7 +60,25 @@ const LinearProgressWrapper = styled(LinearProgress)(
 export default function CheckList(curOrder: CurOrder) {
 
 
-
+    const isMountedRef = useRefMounted();
+    const getOrderData = useCallback(async () => {
+        try {
+          const response = await queryOrderApi.getOrderById(curOrder.order_id);
+    
+          console.log("--response--");
+          console.log(response);
+    
+          if (isMountedRef()) {
+            setOrderData(response);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }, [isMountedRef]);
+    
+      useEffect(() => {
+        getOrderData();
+      }, [getOrderData]);
 
     const CountFinished = () => {
         var i = 0;
@@ -69,6 +91,8 @@ export default function CheckList(curOrder: CurOrder) {
     let f = CountFinished();
 
     const [deal, setDeal] = useState<string>(curOrder.order_status);
+    const [orderData, setOrderData] = useState<CryptoOrder>(null);
+    
 
     const [finished, setFinished] = useState<number>(f);
 
@@ -185,10 +209,17 @@ export default function CheckList(curOrder: CurOrder) {
                         </Grid>
                         <Grid item xs={6}>
                             <Box>
-                                <OrderTimer 
-                                    orderTime="2023-05-15 17:50:47"
-                                    isVip={false}
-                                />
+                                {
+                                orderData
+                                    ?
+                                    <OrderTimer 
+                                        orderTime={orderData.creation_time}
+                                        table={orderData.table_id}
+                                    />
+                                    :
+                                    <CircularProgress />
+                                }
+                                
                             </Box>
                         </Grid>    
                     
@@ -214,10 +245,16 @@ export default function CheckList(curOrder: CurOrder) {
                     <Grid container spacing={2} >
                         <Grid item xs={12}>
                             <Box>
-                                <OrderTimer
-                                    orderTime="2023-05-15 17:50:47" 
-                                    isVip={false}
-                                />
+                            {
+                                orderData
+                                    ?
+                                    <OrderTimer 
+                                        orderTime={orderData.creation_time}
+                                        table={orderData.table_id}
+                                    />
+                                    :
+                                    <CircularProgress />
+                                }
                             </Box>
                         </Grid>  
                         
