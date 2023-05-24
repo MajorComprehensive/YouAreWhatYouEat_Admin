@@ -284,11 +284,11 @@ function PageHeader(props) {
                     onChange={(e) => handleIngredientRecordFormChange('ingr_id', e)}
                   >
                     {
-                      ingredients.map((item) =>
+                      ingredients.sort((i1,i2)=>i1.ingr_id>i2.ingr_id).map((item) =>
                         <MenuItem
                           key={item.ingr_id}
                           value={item.ingr_id}
-                        >{item.ingr_name}</MenuItem>)
+                        >{item.ingr_id}:{item.ingr_name}</MenuItem>)
                     }
                   </Select>
                   <FormHelperText>{ingredientRecordFormErros.ingr_id}</FormHelperText>
