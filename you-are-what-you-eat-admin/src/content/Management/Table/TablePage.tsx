@@ -132,7 +132,12 @@ function TablePage() {
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <iframe src="/static/CanteenSim/index.html" allowFullScreen={true} width={"100%"} height={"600px"} scrolling='no'/>
+              <iframe src="/static/CanteenSim/index.html" allowFullScreen={true} scrolling='no' style={{
+            height:"100vh",
+            width:"100%",
+            border:"none",
+            display:"block"
+        }}/>
             </AccordionDetails>
           </Accordion>
         </Grid>
