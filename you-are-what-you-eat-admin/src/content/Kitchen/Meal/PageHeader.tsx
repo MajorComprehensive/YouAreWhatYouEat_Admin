@@ -28,16 +28,24 @@ import { queryIngredientApi } from '@/queries/query_ingredient';
 import { IngredientInfo } from '@/models/ingredient_info';
 
 import { useRefMounted } from '@/hooks/useRefMounted';
+import addMealCheckboxes from './addMealCheckBox';
+import addMealTagCheckboxes from './addMealTagCheckBox';
 
-let m: MealInfoAdd = {
-  id: 123,
-  dis_name: '123',
-  price: 123,
-  description: '123',
-  tags: [""],
-  picture: null,
-  video: "",
-  ingredient: [""]
+function calDishId(): number {
+  var curDate = new Date();
+  var year = curDate.getFullYear();
+  var mth  = curDate.getMonth() + 1;
+  var date = curDate.getDate();
+  var hour = curDate.getHours();
+  var min  = curDate.getMinutes();
+  var sec  = curDate.getSeconds();
+  var ystr: string = year.toString();
+  var mstr: string = mth >= 10 ? mth.toString() : "0" + mth.toString();
+  var dstr: string = date >= 10 ? date.toString() : "0" + date.toString();
+  var hstr: string = hour >= 10 ? hour.toString() : "0" + hour.toString();
+  var mnstr: string = min >= 10 ? min.toString() : "0" + min.toString();
+  var sstr: string = sec >= 10 ? sec.toString() : "0" + sec.toString();
+  return Number(ystr + mstr + dstr + hstr + mnstr + sstr);
 }
 
 const Input = styled('input')({
@@ -62,45 +70,43 @@ const CardCoverAction = styled(Box)(
 );
 
 
-
 function PageHeader() {
-
-  const [judgeIng, setJudgeIng] = React.useState(false);
-  let a = [];
   const { t }: { t: any } = useTranslation();
 
   const [open, setOpen] = React.useState(false);
   const [newPromotionCover, setNewPromotionCover] = useState<string>('');
-  const [judgeID, setJudgeID] = React.useState(false);
   const [judgePrice, setJudgePrice] = React.useState(false);
   const [ing, setIng] = useState<IngredientInfo[]>([]);
   const isMountedRef = useRefMounted();
+  const [m, setM] = useState<MealInfoAdd>({
+    id: 123,
+    dis_name: '123',
+    price: 123,
+    description: '123',
+    tags: [""],
+    picture: null,
+    video: "",
+    ingredient: [""]
+  });
+  const [ingNames, setIngNames] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
 
   const getAllData = useCallback(async () => {
     try {
-
       let ig = await queryIngredientApi.getIngredientList('');
       if (isMountedRef()) {
-
         setIng(ig);
-
+        setIngNames(ig.map((ing) => ing.ingr_name))
       }
-
     } catch (err) {
       console.error(err);
     }
   }, [isMountedRef]);
 
-
-
-
-
-
   useEffect(() => {
     getAllData();
   }, [getAllData]);
-
 
 
   const handleClickOpen = () => {
@@ -110,25 +116,11 @@ function PageHeader() {
     setOpen(false);
   };
 
-  const idInputChange = (e) => {
-
-    m.id = Number(e.target.value);
-    var rex = /^[0-9]+$/;//正则表达式
-    var flag = (rex.test(m.id.toString()));//通过表达式进行匹配
-    if (flag) {
-      setJudgeID(false);
-    }
-
-    else {
-      setJudgeID(true);
-    }
-
-  }
   const nameInputChange = (e) => {
-    m.dis_name = e.target.value;
+    setM({...m, dis_name: e.target.value});
   }
   const priceInputChange = (e) => {
-    m.price = Number(e.target.value);
+    setM({...m, price: Number(e.target.value)});
     var rex = /^[0-9]+$/;//正则表达式
     var flag = (rex.test(m.price.toString()));//通过表达式进行匹配
     if (flag) {
@@ -140,40 +132,15 @@ function PageHeader() {
     }
   }
   const descriptionInputChange = (e) => {
-    m.description = e.target.value;
+    setM({...m, description: e.target.value});
   }
   const tagsInputChange = (e) => {
-    m.tags = e.target.value.split(" ");
-
+    setM({...m, tags: e.target.value.split(" ")});
   }
-  const ingInputChange = (e) => {
-    m.ingredient = e.target.value.split(" ");
-    let j = 1;
-    m.ingredient.map((item) => {
-      if (a.indexOf(item) == -1) {
-        j = 0;
-        console.log(item);
-      }
-      if (j == 0) {
-        setJudgeIng(true);
-      }
-      else {
-        setJudgeIng(false);
-      }
 
-    })
-
-  }
   const viedoInputChange = (e) => {
-    m.video = e.target.value;
+    setM({...m, video: e.target.value})
   }
-
-  ing.map((item) => {
-    a.push(item.ingr_name);
-  })
-  console.log("库存啦啦啦");
-  console.log(a);
-  console.log(ing);
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -199,18 +166,6 @@ function PageHeader() {
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>菜品信息</DialogTitle>
           <DialogContent>
-
-            <TextField
-              autoFocus
-              margin="dense"
-              id="id"
-              label="菜品编号"
-              fullWidth
-              variant="standard"
-              onChange={idInputChange}
-              helperText="请输入合法数字"
-              error={judgeID}
-            />
             <TextField
               autoFocus
               margin="dense"
@@ -241,28 +196,8 @@ function PageHeader() {
               variant="standard"
               onChange={descriptionInputChange}
             />
-            <TextField
-
-              autoFocus
-              margin="dense"
-              id="name"
-              label="菜品需要的原料"
-              fullWidth
-              variant="standard"
-              onChange={ingInputChange}
-              helperText="请输入现有的原料"
-              error={judgeIng}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="标签"
-              fullWidth
-              variant="standard"
-              onChange={tagsInputChange}
-              helperText="单锅，拼锅，全新套餐，季节新品，牛羊肉类，水产鱼类，丸滑虾类，美味主食，豆面制品，根茎菌菇，酒水，甜点小食"
-            />
+            {addMealCheckboxes(ingNames, setIngNames)}
+            {addMealTagCheckboxes(selectedTags, setSelectedTags)}
             <TextField
               autoFocus
               margin="dense"
@@ -311,7 +246,8 @@ function PageHeader() {
             <Button onClick={handleClose}>退出</Button>
             <Button onClick={() => {
               const conduct = async () => {
-                m.picture = newPromotionCover;
+                // 获取当前时间作为菜品 id 提交
+                setM({...m, picture: newPromotionCover, id: calDishId()});
                 console.log(m.tags);
                 return mealInfoApi.addMeal(m);
               }

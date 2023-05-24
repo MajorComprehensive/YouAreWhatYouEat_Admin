@@ -252,9 +252,9 @@ const MealInfoTable = () => {
   }
 
 
-  ing.map((item) => {
-    a.push(item.ingr_name);
-  })
+  // ing.map((item) => {
+  //   a.push(item.ingr_name);
+  // })
   console.log("a");
 
   console.log(ing);
