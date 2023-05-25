@@ -135,9 +135,6 @@ function PageHeader() {
   const descriptionInputChange = (e) => {
     setM({...m, description: e.target.value});
   }
-  const tagsInputChange = (e) => {
-    setM({...m, tags: e.target.value.split(" ")});
-  }
 
   const viedoInputChange = (e) => {
     setM({...m, video: e.target.value})
@@ -248,8 +245,7 @@ function PageHeader() {
             <Button onClick={() => {
               const conduct = async () => {
                 // 获取当前时间作为菜品 id 提交
-                setM({...m, picture: newPromotionCover, id: calDishId()});
-                console.log(m.tags);
+                setM({...m, picture: newPromotionCover, id: calDishId(), ingredient: ingNames, tags: selectedTags});
                 return mealInfoApi.addMeal(m);
               }
               var rex = /^[0-9]+$/;//正则表达式

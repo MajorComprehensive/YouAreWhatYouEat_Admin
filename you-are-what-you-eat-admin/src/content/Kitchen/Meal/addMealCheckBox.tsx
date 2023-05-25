@@ -21,6 +21,10 @@ export default function addMealCheckboxes(
       options={allIngNames}
       disableCloseOnSelect
       getOptionLabel={(ing_name) => ing_name}
+      onChange={(e, v) => {
+        setIngNames(v);
+        console.log(ingNames);
+      }}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
@@ -28,12 +32,6 @@ export default function addMealCheckboxes(
             checkedIcon={checkedIcon}
             style={{ marginRight: 8 }}
             checked={selected}
-            onChange={(e) => {
-                if (e.target.checked)
-                    setIngNames([...ingNames, e.target.name])
-                else
-                    setIngNames(ingNames.filter((n) => n != e.target.name));
-            }}
           />
           {option}
         </li>

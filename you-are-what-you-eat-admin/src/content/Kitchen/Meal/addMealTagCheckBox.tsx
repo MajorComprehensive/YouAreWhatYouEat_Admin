@@ -20,6 +20,10 @@ export default function addMealTagCheckboxes(tags: string[], setSelectedTags: Re
       options={TAGS}
       disableCloseOnSelect
       getOptionLabel={(tag) => tag}
+      onChange={(e, v) => {
+        setSelectedTags(v);
+        console.log(v);
+      }}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
@@ -27,12 +31,6 @@ export default function addMealTagCheckboxes(tags: string[], setSelectedTags: Re
             checkedIcon={checkedIcon}
             style={{ marginRight: 8 }}
             checked={selected}
-            onChange={(e) => {
-                if (e.target.checked)
-                    setSelectedTags([...tags, e.target.name])
-                else
-                    setSelectedTags(tags.filter((n) => n != e.target.name));
-            }}
           />
           {option}
         </li>

@@ -62,6 +62,17 @@ function strListJoin(ls: string[]) {
   return ret;
 }
 
+function dishIdToDataStr(dishId: string): string {
+  // 20230525000000
+  var year = dishId.slice(0, -10);
+  var month = dishId.slice(4, -8);
+  var day = dishId.slice(6, -6)
+  var hour = dishId.slice(8, -4)
+  var min = dishId.slice(10, -2)
+  var sec = dishId.slice(12)
+  return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
+}
+
 const applyPagination = (
   mealInfoes: MealInfo[],
   page: number,
@@ -229,7 +240,7 @@ const MealInfoTable = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>菜品编号</TableCell>
+              <TableCell>上架时间</TableCell>
               <TableCell>菜品名称</TableCell>
               <TableCell >价格</TableCell>
               <TableCell>菜品描述</TableCell>
@@ -250,7 +261,7 @@ const MealInfoTable = () => {
                         color="text.primary"
                         gutterBottom
                       >
-                        {mealInfo.id}
+                        {mealInfo.id ? dishIdToDataStr(mealInfo.id.toString()) : ""}
                       </Typography>
 
                     </TableCell>
