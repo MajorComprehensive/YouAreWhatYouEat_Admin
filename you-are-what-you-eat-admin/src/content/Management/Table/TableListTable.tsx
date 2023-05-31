@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent} from 'react';
 import { format } from 'date-fns';
 import numeral from 'numeral';
 import PropTypes from 'prop-types';
@@ -33,6 +33,9 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import BulkActions from './BulkActions';
 import TextField from '@mui/material/TextField';
+import { useState, useEffect, useCallback } from 'react';
+import { useRefMounted } from 'src/hooks/useRefMounted';
+import { queryTableApi } from '@/queries/query_table';
 
 import ModifyDialog from './ModifyDialog';
 import SignUpVip from './AssignSeat';
@@ -41,6 +44,7 @@ import IndividualTable from './IndividualTable';
 interface VIPListTableProps {
   className?: string;
   cryptoTable: CryptoTable[];
+  waiterList: string[];
 }
 
 interface Filters {
@@ -84,7 +88,7 @@ const applyPagination = (
   return cryptoTable.slice(page * limit, page * limit + limit);
 };
 
-const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
+const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable,waiterList }) => {
   const [selectedCryptoTable, setSelectedCryptoTable] = useState<string[]>([]);
   const selectedBulkActions = selectedCryptoTable.length > 0;
   const [page, setPage] = useState<number>(0);
@@ -237,6 +241,7 @@ const VIPListTable: FC<VIPListTableProps> = ({ cryptoTable }) => {
                   customer_number={cryptoOrder.customer_number}
                   table_capacity={cryptoOrder.table_capacity}
                   occupied={cryptoOrder.occupied}
+                  waiters={waiterList}
                 />
               </Grid>
             );

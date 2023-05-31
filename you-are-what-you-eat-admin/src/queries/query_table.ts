@@ -123,7 +123,7 @@ class QueryTableApi {
   public getAvailableWaiter = async () => {
     const r = (
       await GetApi('/Schedule/GetScheduleInfo', {
-        place: '大厅',
+        place: '大堂',
         occupation: '服务员',
         start: getCurrentTimeString()
       })

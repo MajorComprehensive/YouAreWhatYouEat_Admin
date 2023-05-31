@@ -15,6 +15,12 @@ import { useTheme } from '@mui/material';
 import FullOrderView from '../Transactions/FullOrderView';
 import { useEffect, useCallback } from 'react';
 import { useRefMounted } from 'src/hooks/useRefMounted';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import { Theme} from '@mui/material/styles';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 import {
   Container,
@@ -91,6 +97,7 @@ export interface IndiTableProps {
   customer_number: number;
   table_capacity: number;
   occupied: string;
+  waiters: string[];
 }
 
 export default function IndividualTable(props: IndiTableProps) {
@@ -142,6 +149,35 @@ export default function IndividualTable(props: IndiTableProps) {
 
     setInputNum(parseInt(value));
   };
+
+  const [personName, setPersonName] = React.useState<string>("");
+
+  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      value
+    );
+  };
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  function getStyles(theme: Theme) {
+    return {
+      fontWeight:
+        theme.typography.fontWeightRegular
+    };
+  }
 
   const handleAssignConfirm = async () => {
     console.log('assign confirm');
@@ -301,8 +337,42 @@ export default function IndividualTable(props: IndiTableProps) {
               helperText="非法人数"
             />
           )}
-        </Box>
-        {inputNum > 0 ? (
+          </Box>
+            
+          <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { m: 2, width: '30ch' }
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <FormControl sx={{ m: 2, width: '30ch', mt: 3 }}>
+          <InputLabel id="demo-simple-select-label">服务员</InputLabel>
+              <Select
+              labelId="demo-simple-select-label"
+              value={personName}
+              label="服务员"
+              onChange={handleChange}
+            >
+              <MenuItem disabled value="">
+                <em>请安排服务员</em>
+              </MenuItem>
+              {props.waiters.map((name) => (
+                <MenuItem
+                  key={name}
+                  value={name}
+                  style={getStyles(theme)}
+                >
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          </Box>
+          <Divider/>
+
+        {inputNum > 0 && personName !="" ? (
           <Button
             startIcon={<AddTwoToneIcon fontSize="small" />}
             onClick={handleAssignConfirm}

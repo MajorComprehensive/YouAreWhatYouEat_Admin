@@ -58,9 +58,30 @@ function TablePage() {
     getVipData();
   }, [getVipData]);
 
+  const [waiterData, setWaiterData] = useState<string[]>(null);
+
+  const getWaiterData = useCallback(async () => {
+    try {
+      const response = await queryTableApi.getAvailableWaiter();
+
+      console.log("--response--");
+      console.log(response);
+
+      if (isMountedRef()) {
+        setWaiterData(response);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getWaiterData();
+  }, [getWaiterData]);
+
   //console.log("--orderData--");
   //console.log(orderData);
-  if (!tableData)
+  if (!tableData || !waiterData)
     return (
       <>
         <Grid
@@ -143,7 +164,7 @@ function TablePage() {
         </Grid>
 
         <Grid item xs={12}>
-          <TableListTable cryptoTable={tableData.tables} />
+          <TableListTable cryptoTable={tableData.tables} waiterList={waiterData}/>
         </Grid>
       </Grid>
     </>
