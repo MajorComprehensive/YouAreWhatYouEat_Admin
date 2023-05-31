@@ -7,6 +7,22 @@ import { CryptoOrder } from '@/models/crypto_order';
 
 import { GetApi, PostApi } from '@/utils/requests';
 
+function getCurrentTimeString(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const date = now.getDate();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const second = now.getSeconds();
+  const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+  const formattedDate = date < 10 ? `0${date}` : `${date}`;
+  const formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
+  const formattedMinute = minute < 10 ? `0${minute}` : `${minute}`;
+  const formattedSecond = second < 10 ? `0${second}` : `${second}`;
+  return `${year}-${formattedMonth}-${formattedDate} ${formattedHour}:${formattedMinute}:${formattedSecond}`;
+}
+
 class QueryTableApi {
   public getTable: () => Promise<CryptoAllTable> = async () => {
     try {
@@ -103,6 +119,29 @@ class QueryTableApi {
       })
     ).data as CryptoOrder;
   };
+
+  public getAvailableWaiter = async () => {
+    const r = (
+      await GetApi('/Schedule/GetScheduleInfo', {
+        place: '大厅',
+        occupation: '服务员',
+        start: getCurrentTimeString()
+      })
+    ).data;
+    var ret: string[] = [];
+    if (!r)
+      return ret;
+    for (var i = 0; i < r.length; ++i) {
+      try {
+        for (var j = 0; j < r[i]["peoples"].length; ++j)
+            ret.push(r[i]["peoples"][j]["name"])
+      }
+      catch(e) {
+        console.log(e);
+      }
+    }
+    return ret;
+  }
 }
 
 export const queryTableApi = new QueryTableApi();
