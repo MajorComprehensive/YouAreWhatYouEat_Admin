@@ -36,6 +36,9 @@ import {
     ListItemAvatar
 } from '@mui/material';
 
+import { queryTableApi } from '@/queries/query_table';
+import { WaiterOnTable,WaiterOnTableSet } from '@/models/crypto_table';
+
 
 const ListItemAvatarWrapper = styled(ListItemAvatar)(
     ({ theme }) => `
@@ -93,6 +96,8 @@ const OrderTimer = (props:OrderTimerProps) => {
   
     const [RemainingTime, changeRemainingTime] = useState(0);
     const [counting, changeCounting] = useState(false);
+
+    const [waiterInfo, setWaiterInfo] = React.useState<WaiterOnTable>(null);
     
     // 组件卸载时清除计时器
     useEffect(() => {
@@ -128,9 +133,9 @@ const OrderTimer = (props:OrderTimerProps) => {
 
     const getAllData = useCallback(async () => {
         try {
-            // let curOrders = await curOrderApi.getCurOrder();
+            const response2 = await queryTableApi.getWaiterOnTable(parseInt(props.table));
             if (isMountedRef()) {
-
+            setWaiterInfo(response2);
             }
         } catch (err) {
             console.error(err);
@@ -229,6 +234,17 @@ const OrderTimer = (props:OrderTimerProps) => {
                                     primaryTypographyProps={{ variant: 'h5', noWrap: true }}
                                 />
                             </ListItem>
+                            {
+                                waiterInfo==null || waiterInfo.waiter_id==null?
+                                " "
+                                :
+                                <ListItem disableGutters>
+                                <ListItemText
+                                    primary={"服务员：" + waiterInfo.waiter_name}
+                                    primaryTypographyProps={{ variant: 'h5', noWrap: true }}
+                                />
+                            </ListItem>
+                            } 
                         </List>
                     </Grid>
                     <Grid xs={12} columnSpacing={{ xs: 1, sm: 2, md: 3 }} item display="flex" justifyContent="center"  alignItems="center">

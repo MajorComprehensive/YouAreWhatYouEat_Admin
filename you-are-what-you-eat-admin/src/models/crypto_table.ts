@@ -33,6 +33,19 @@ export interface Serie
   data:number[]
 }
 
+export interface WaiterOnTable
+{
+  waiter_name:string,
+  waiter_id:string
+}
+
+export interface WaiterOnTableSet
+{
+  table_id:number,
+  waiter_id:string,
+  waiter_name:string
+}
+
 export interface CryptoSummary2
 {
   series: Serie[],

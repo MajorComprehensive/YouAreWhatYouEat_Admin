@@ -1,7 +1,9 @@
 import {
   CryptoTable,
   CryptoAllTable,
-  CryptoAutoAssignTable
+  CryptoAutoAssignTable,
+  WaiterOnTable,
+  WaiterOnTableSet
 } from '@/models/crypto_table';
 import { CryptoOrder } from '@/models/crypto_order';
 
@@ -118,6 +120,19 @@ class QueryTableApi {
         table: table
       })
     ).data as CryptoOrder;
+  };
+
+  public getWaiterOnTable = async (table_id: number) => {
+    return (
+      await GetApi('/Table/WaiterByTable', {
+        table_id: table_id
+      })
+    ).data as WaiterOnTable;
+  };
+
+  public setWaiterOnTable: (info: WaiterOnTableSet) => Promise<string> = async (info) => {
+    const r = await PostApi('/Table/WaiterByTable', info);
+    return r.statusText;
   };
 
   public getAvailableWaiter = async () => {

@@ -49,6 +49,7 @@ import TextField from '@mui/material/TextField';
 import { FC, ChangeEvent, useState } from 'react';
 import { queryTableApi } from '@/queries/query_table';
 import { WaiterDataProps } from './TablePage';
+import { WaiterOnTable,WaiterOnTableSet } from '@/models/crypto_table';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -142,13 +143,19 @@ export default function IndividualTable(props: IndiTableProps) {
     setInputNum(parseInt(value));
   };
 
+  const [selectId, setSelectId] = React.useState<string>("");
+  const [selectName, setSelectName] = React.useState<string>("");
   const [personName, setPersonName] = React.useState<string>("");
+
+  const [waiterInfo, setWaiterInfo] = React.useState<WaiterOnTable>(null);
 
   const handleChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
       target: { value },
     } = event;
     console.log(value)
+    setSelectId(value.split(',')[0]);
+    setSelectName(value.split(',')[1]);
     setPersonName(value);
   };
 
@@ -161,6 +168,8 @@ export default function IndividualTable(props: IndiTableProps) {
 
   const handleAssignConfirm = async () => {
     console.log('assign confirm');
+    console.log(selectId)
+    console.log(selectName)
 
     let confirmData: CryptoTable = {
       table_id: props.table_id,
@@ -169,9 +178,16 @@ export default function IndividualTable(props: IndiTableProps) {
       occupied: '是'
     };
 
+    let confirmDataWaiter: WaiterOnTableSet = {
+      table_id: props.table_id,
+      waiter_id:selectId,
+      waiter_name:selectName
+    };
+
     try {
-      let res = await queryTableApi.setTable(confirmData);
-      console.log(res);
+      let res1 = await queryTableApi.setTable(confirmData);
+      let res2 = await queryTableApi.setWaiterOnTable(confirmDataWaiter);
+      //console.log(res);
       setOpenSuccessDialog(true);
     } catch (err) {
       console.error(err);
@@ -206,6 +222,15 @@ export default function IndividualTable(props: IndiTableProps) {
     try {
       const response = await queryTableApi.getOrderOnTable(props.table_id);
 
+      if(props.occupied=="占用")
+      {
+        console.log("waiter")
+        const response2 = await queryTableApi.getWaiterOnTable(props.table_id);
+        if (isMountedRef()) {
+          setWaiterInfo(response2);
+        }
+      }
+
       //console.log("--response--");
       //console.log(response);
 
@@ -237,6 +262,14 @@ export default function IndividualTable(props: IndiTableProps) {
           <Typography variant="body2" color="text.secondary">
             {props.occupied}
           </Typography>
+          {
+            waiterInfo==null || waiterInfo.waiter_id==null?
+            " "
+            :
+            <Typography variant="body2" color="text.secondary">
+            {"服务员："+waiterInfo.waiter_name}
+            </Typography>
+          }
         </CardContent>
         <CardActions>
           {props.occupied == '空闲' ? (
@@ -340,8 +373,8 @@ export default function IndividualTable(props: IndiTableProps) {
               </MenuItem>
               {props.waiters.map((waiter) => (
                 <MenuItem
-                  key={waiter.name}
-                  value={waiter.name}
+                  key={waiter.id}
+                  value={waiter.id+","+waiter.name}
                   style={getStyles(theme)}
                 >
                   {waiter.name}
