@@ -178,15 +178,19 @@ export default function IndividualTable(props: IndiTableProps) {
       occupied: '是'
     };
 
-    let confirmDataWaiter: WaiterOnTableSet = {
-      table_id: props.table_id,
-      waiter_id:selectId,
-      waiter_name:selectName
-    };
-
     try {
       let res1 = await queryTableApi.setTable(confirmData);
-      let res2 = await queryTableApi.setWaiterOnTable(confirmDataWaiter);
+
+      if( personName !="" && selectId !="" && selectName !="")
+      {
+        let confirmDataWaiter: WaiterOnTableSet = {
+          table_id: props.table_id,
+          waiter_id:selectId,
+          waiter_name:selectName
+        };
+        let res2 = await queryTableApi.setWaiterOnTable(confirmDataWaiter);
+      }
+      
       //console.log(res);
       setOpenSuccessDialog(true);
     } catch (err) {
@@ -385,7 +389,7 @@ export default function IndividualTable(props: IndiTableProps) {
           </Box>
           <Divider/>
 
-        {inputNum > 0 && personName !="" ? (
+        {inputNum > 0 ? (
           <Button
             startIcon={<AddTwoToneIcon fontSize="small" />}
             onClick={handleAssignConfirm}
