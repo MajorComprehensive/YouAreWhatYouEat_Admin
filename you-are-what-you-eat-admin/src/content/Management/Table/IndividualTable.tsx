@@ -102,16 +102,7 @@ export interface IndiTableProps {
 }
 
 export default function IndividualTable(props: IndiTableProps) {
-  /*const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const theme = useTheme();*/
   const [open, setOpen] = React.useState(false);
   const [open_occ, setOpenOcc] = React.useState(false);
   const [openSuccessDialog, setOpenSuccessDialog] = React.useState(false);
@@ -158,23 +149,9 @@ export default function IndividualTable(props: IndiTableProps) {
       target: { value },
     } = event;
     console.log(value)
-
-    setPersonName(
-      // On autofill we get a stringified value.
-      value
-    );
+    setPersonName(value);
   };
 
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
   function getStyles(theme: Theme) {
     return {
       fontWeight:

@@ -40,11 +40,12 @@ import { queryTableApi } from '@/queries/query_table';
 import ModifyDialog from './ModifyDialog';
 import SignUpVip from './AssignSeat';
 import IndividualTable from './IndividualTable';
+import { WaiterDataProps } from './TablePage';
 
 interface VIPListTableProps {
   className?: string;
   cryptoTable: CryptoTable[];
-  waiterList: string[];
+  waiterList: WaiterDataProps[];
 }
 
 interface Filters {

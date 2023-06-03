@@ -129,13 +129,16 @@ class QueryTableApi {
         end: getCurrentTimeString()
       })
     ).data;
-    var ret: string[] = [];
+    var ret: {name: string, id: string}[] = [];
     if (!r)
       return ret;
     for (var i = 0; i < r.length; ++i) {
       try {
         for (var j = 0; j < r[i]["peoples"].length; ++j)
-            ret.push(r[i]["peoples"][j]["name"])
+            ret.push({
+              name: r[i]["peoples"][j]["name"],
+              id: r[i]["peoples"][j]["id"]
+            })
       }
       catch(e) {
         console.log(e);
