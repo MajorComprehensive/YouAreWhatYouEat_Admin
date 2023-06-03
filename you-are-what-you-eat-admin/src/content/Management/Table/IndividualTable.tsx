@@ -48,6 +48,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { FC, ChangeEvent, useState } from 'react';
 import { queryTableApi } from '@/queries/query_table';
+import { WaiterDataProps } from './TablePage';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -97,7 +98,7 @@ export interface IndiTableProps {
   customer_number: number;
   table_capacity: number;
   occupied: string;
-  waiters: string[];
+  waiters: WaiterDataProps[];
 }
 
 export default function IndividualTable(props: IndiTableProps) {
@@ -156,6 +157,8 @@ export default function IndividualTable(props: IndiTableProps) {
     const {
       target: { value },
     } = event;
+    console.log(value)
+
     setPersonName(
       // On autofill we get a stringified value.
       value
@@ -358,13 +361,13 @@ export default function IndividualTable(props: IndiTableProps) {
               <MenuItem disabled value="">
                 <em>请安排服务员</em>
               </MenuItem>
-              {props.waiters.map((name) => (
+              {props.waiters.map((waiter) => (
                 <MenuItem
-                  key={name}
-                  value={name}
+                  key={waiter.name}
+                  value={waiter.name}
                   style={getStyles(theme)}
                 >
-                  {name}
+                  {waiter.name}
                 </MenuItem>
               ))}
             </Select>

@@ -24,6 +24,11 @@ import Skeleton from '@mui/material/Skeleton';
 import TableSummarySkeleton from './TableSummarySkeleton';
 import TableListTableSkeleton from './TableListTableSkeleton';
 
+export interface WaiterDataProps {
+  name: string;
+  id: string;
+}
+
 function TablePage() {
   const [expanded, setExpanded] = useState<string | false>('panel1');
   const [expanded2, setExpanded2] = useState<string | false>(false);
@@ -58,7 +63,7 @@ function TablePage() {
     getVipData();
   }, [getVipData]);
 
-  const [waiterData, setWaiterData] = useState<string[]>(null);
+  const [waiterData, setWaiterData] = useState<WaiterDataProps[]>(null);
 
   const getWaiterData = useCallback(async () => {
     try {

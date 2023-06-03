@@ -125,7 +125,8 @@ class QueryTableApi {
       await GetApi('/Schedule/GetScheduleInfo', {
         place: '大堂',
         occupation: '服务员',
-        start: getCurrentTimeString()
+        start: getCurrentTimeString(),
+        end: getCurrentTimeString()
       })
     ).data;
     var ret: string[] = [];
