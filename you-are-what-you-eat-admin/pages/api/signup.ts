@@ -10,6 +10,8 @@ export default async function handler(req, res) {
 
 		const employee:EmployeeUpload = req.body;
 
+		
+
 		const data = (
 			await axios.post(GlobalConfig.getAuthorizationURL() + '/api/signup', {
 			"application": "application_dbks",
@@ -21,6 +23,8 @@ export default async function handler(req, res) {
 			"email": employee.email
 		})
 		).data;
+
+		console.log(data)
 
 		res.status(200).json(data);
 	}

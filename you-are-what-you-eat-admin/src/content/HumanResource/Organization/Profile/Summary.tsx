@@ -37,7 +37,7 @@ function Summary({ user }: { user: EmployeeDetail }) {
           <WorkIcon />
         </AvatarPrimary>
         <Box pl={2} flex={1}>
-          <Typography variant="h3">出勤</Typography>
+          <Typography variant="h3">排班</Typography>
 
           <Box pt={2} display="flex">
             <Box pr={8}>
@@ -62,7 +62,7 @@ function Summary({ user }: { user: EmployeeDetail }) {
 
               }).length}</Typography>
             </Box>
-            <Box>
+            {/* <Box>
               <Typography
                 gutterBottom
                 variant="caption"
@@ -89,7 +89,7 @@ function Summary({ user }: { user: EmployeeDetail }) {
                   }).length
                 }
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </Box>

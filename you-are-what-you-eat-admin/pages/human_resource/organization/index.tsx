@@ -182,18 +182,19 @@ function Organization() {
                         个人本期排班表
                       </Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    {/* <Grid item xs={2}>
                       <Button
                         size="large"
                         variant="outlined"
                         onClick={() => {
-                          //这里有个比较麻烦的签到
+                          
+
                         }}
                       >
                         <AssignmentTurnedInIcon />
-                        请准时指纹签到
+                        签到
                       </Button>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 }
               />

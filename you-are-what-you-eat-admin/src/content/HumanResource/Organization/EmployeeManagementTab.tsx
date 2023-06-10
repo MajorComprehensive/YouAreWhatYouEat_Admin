@@ -305,7 +305,7 @@ function EmployeeManagementTab() {
                   <TableCell>员工名</TableCell>
                   <TableCell>员工性别</TableCell>
                   <TableCell>员工职位</TableCell>
-                  <TableCell>出勤率</TableCell>
+                  {/* <TableCell>月排班数</TableCell> */}
                   <TableCell>获奖次数</TableCell>
                   <TableCell align="right">删除操作</TableCell>
                   <TableCell align="right">点击查看</TableCell>
@@ -328,7 +328,7 @@ function EmployeeManagementTab() {
                       <TableCell>{employee.name}</TableCell>
                       <TableCell>{employee.gender}</TableCell>
                       <TableCell>{employee.occupation}</TableCell>
-                      <TableCell>{employee.attendance_rate}</TableCell>
+                      {/* <TableCell>{employee.attendance_rate}</TableCell> */}
                       <TableCell>{employee.award_times}</TableCell>
                       <TableCell align="right">
                         <Tooltip placement="top" title="Delete" arrow>
