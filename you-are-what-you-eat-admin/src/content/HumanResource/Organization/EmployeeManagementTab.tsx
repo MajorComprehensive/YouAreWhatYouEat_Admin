@@ -232,7 +232,9 @@ function EmployeeManagementTab() {
                         console.log("this is upload",upload);
 
                         return await humanResourceApi.registerEmployee({
-                          ...upload
+                          ...upload,
+                          cover:"",
+                          avatar:"",
                         });
                       };
 
