@@ -245,8 +245,11 @@ function PageHeader() {
             <Button onClick={() => {
               const conduct = async () => {
                 // 获取当前时间作为菜品 id 提交
-                setM({...m, picture: newPromotionCover, id: calDishId(), ingredient: ingNames, tags: selectedTags});
-                return mealInfoApi.addMeal(m);
+                const newM= {...m, id: calDishId(), picture: newPromotionCover, ingredient: ingNames, tags: selectedTags};
+
+                
+                setM(newM);
+                return mealInfoApi.addMeal(newM);
               }
               var rex = /^[0-9]+$/;//正则表达式
               var flag = (rex.test(m.price.toString()) && rex.test(m.id.toString()));//通过表达式进行匹配
