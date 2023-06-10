@@ -124,23 +124,23 @@ class EnergyApi {
       view_by_type: [
         {
           type: '总量',
-          consumption: weekTotal,
+          consumption: Math.round(weekTotal),
           ratio: 1
         },
         {
           type: '电',
           consumption: weekPwrTotal,
-          ratio: weekTotal === 0 ? 1 : weekPwrTotal / weekTotal
+          ratio: weekTotal === 0 ? 1 : Number((weekPwrTotal / weekTotal).toFixed(2))
         },
         {
           type: '水',
           consumption: weekWtrTotal,
-          ratio: weekTotal === 0 ? 1 : weekWtrTotal / weekTotal
+          ratio: weekTotal === 0 ? 1 : Number((weekWtrTotal / weekTotal).toFixed(2))
         },
         {
           type: '燃气',
           consumption: weekGasTotal,
-          ratio: weekTotal === 0 ? 1 : weekGasTotal / weekTotal
+          ratio: weekTotal === 0 ? 1 : Number((weekGasTotal / weekTotal).toFixed(2))
         }
       ],
       week_total: weekTotalArr
