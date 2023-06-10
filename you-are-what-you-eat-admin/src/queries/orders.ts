@@ -67,6 +67,9 @@ class OrdersApi {
         trend: []
       };
     });
+    dishOrders.sort((i1, i2) => {
+      return i2.order_times - i1.order_times
+    })
 
     return Promise.resolve(dishOrders);
   };
@@ -173,7 +176,7 @@ class OrdersApi {
           end: getDayTime(new Date(), 0, 'end')
         })
       ).data.data;
-      console.log(rawTopList);
+      console.log('raw',rawTopList);
       var top_list = rawTopList.map((d) => {
         return {
           name: d.name,
@@ -182,6 +185,10 @@ class OrdersApi {
           increase: 1
         };
       });
+      top_list.sort((i1, i2) => {
+        return i2.order_num - i1.order_num; 
+      });
+      
       var best = {
         best_seller: '',
         total: 0,
@@ -207,7 +214,7 @@ class OrdersApi {
           })
         );
       }
-      console.log(best);
+      console.log('best:', best);
 
       const data = {
         ...best,
