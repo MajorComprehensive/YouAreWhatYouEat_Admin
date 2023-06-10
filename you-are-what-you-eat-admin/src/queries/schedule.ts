@@ -15,7 +15,7 @@ class ScheduleApi {
     place?: string,
     occupation?: string
   ) => {
-    let response = await GetApi('Schedule/GetScheduleInfo', {
+    let response = await GetApi('Schedule/GetSchedule', {
       start: start,
       end: end,
       id: id,
