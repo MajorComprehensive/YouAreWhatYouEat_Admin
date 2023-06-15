@@ -142,34 +142,10 @@ function TablePage() {
           </Accordion>
         </Grid>
 
-        <Grid item xs={12}>
-          <Accordion
-            expanded={expanded2 === 'panel2'}
-            onChange={handleChange2('panel2')}
-            TransitionProps={{ unmountOnExit: true }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                <b>在3D中预览餐厅</b>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <iframe src="/static/CanteenSim/index.html" allowFullScreen={true} scrolling='no' style={{
-            height:"100vh",
-            width:"100%",
-            border:"none",
-            display:"block"
-        }}/>
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
+
 
         <Grid item xs={12}>
-          <TableListTable cryptoTable={tableData.tables} waiterList={waiterData}/>
+          <TableListTable cryptoTable={tableData.tables} waiterList={waiterData} />
         </Grid>
       </Grid>
     </>
